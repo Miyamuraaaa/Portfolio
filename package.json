@@ -10,8 +10,8 @@
     "generate-manifest": "node scripts/generate-content-manifest.mjs"
   },
   "dependencies": {
-    "@react-three/drei": "9.117.3",
-    "@react-three/fiber": "8.17.10",
+    "@react-three/drei": "10.7.8",
+    "@react-three/fiber": "9.7.0",
     "framer-motion": "11.15.0",
     "next": "15.0.4",
     "react": "19.0.0",
