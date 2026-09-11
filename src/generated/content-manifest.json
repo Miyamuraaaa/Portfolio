@@ -1,0 +1,51 @@
+{
+  "reading-process": [
+    {
+      "id": "reading-process-reading-01",
+      "folderName": "reading-01",
+      "title": "Reading Process Worksheet 1",
+      "subtitle": "Understanding the Text",
+      "date": "2026-09-01",
+      "description": "My completed reading process worksheet demonstrating pre-reading, during-reading, and post-reading strategies.",
+      "score": null,
+      "reflection": null,
+      "order": 1,
+      "mainFile": "/portfolio-content/reading-process/reading-01/worksheet.pdf",
+      "mainFileType": "pdf",
+      "thumbnail": null
+    }
+  ],
+  "reader-responses": [
+    {
+      "id": "reader-responses-response-01",
+      "folderName": "response-01",
+      "title": "Reader Response 1",
+      "subtitle": "Critical Analysis of Text",
+      "date": "2026-09-05",
+      "description": "My personal response and critical reflection on the assigned reading.",
+      "score": null,
+      "reflection": null,
+      "order": 1,
+      "mainFile": "/portfolio-content/reader-responses/response-01/response.pdf",
+      "mainFileType": "pdf",
+      "thumbnail": null
+    }
+  ],
+  "icare": [
+    {
+      "id": "icare-activity-01",
+      "folderName": "activity-01",
+      "title": "iCARE Activity 1",
+      "subtitle": "",
+      "date": "2026-09-10",
+      "description": "",
+      "score": "10/10",
+      "reflection": "This activity helped me understand the collaborative aspect of reading. Discussing with peers gave me new perspectives.",
+      "order": 1,
+      "mainFile": "/portfolio-content/icare/activity-01/screenshot.png",
+      "mainFileType": "png",
+      "thumbnail": null
+    }
+  ],
+  "reflections": []
+}
