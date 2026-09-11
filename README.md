@@ -14,8 +14,15 @@ A complete, production-ready, professional 3D interactive website for the GED000
 
 1. Install dependencies:
    ```bash
-   npm install --legacy-peer-deps
+   npm install
    ```
+
+   The 3D stack is intentionally aligned for React 19:
+   - `react` / `react-dom`: 19.x
+   - `@react-three/fiber`: 9.x
+   - `@react-three/drei`: 10.x
+
+   Avoid `--legacy-peer-deps` unless you are deliberately troubleshooting a separate package conflict, because it can hide incompatible peer-dependency combinations.
 
 2. Start the development server:
    ```bash
@@ -23,6 +30,32 @@ A complete, production-ready, professional 3D interactive website for the GED000
    ```
 
 3. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### If you previously installed the old dependency set
+
+The original project used React 19 with React Three Fiber 8, which can cause a browser runtime crash such as:
+
+```text
+Cannot read properties of undefined (reading 'ReactCurrentOwner')
+```
+
+After pulling the fixed version, do a clean reinstall.
+
+**PowerShell:**
+```powershell
+Remove-Item -Recurse -Force .next -ErrorAction SilentlyContinue
+Remove-Item -Recurse -Force node_modules -ErrorAction SilentlyContinue
+npm install
+npm run dev
+```
+
+**Command Prompt:**
+```bat
+rmdir /s /q .next
+rmdir /s /q node_modules
+npm install
+npm run dev
+```
 
 ## HOW TO ADD NEW SCHOOLWORK
 
@@ -33,13 +66,14 @@ All your work goes into the `portfolio-content/` directory. It is organized into
 - `portfolio-content/reading-process/`
 - `portfolio-content/reader-responses/`
 - `portfolio-content/icare/`
+- `portfolio-content/reflections/`
 
 ### Steps to Add Work:
 
 1. **Create a new folder** inside the appropriate category.
    *Example: `portfolio-content/reading-process/reading-02`*
 
-2. **Add your document**. Put your PDF, PNG, or JPG inside that folder. 
+2. **Add your document**. Put your PDF, PNG, JPG, JPEG, or WEBP inside that folder.
    *(The system will automatically find it).*
 
 3. **(Optional) Add metadata**. Create an `info.json` file in the same folder to specify the title, description, date, or score:
@@ -53,11 +87,11 @@ All your work goes into the `portfolio-content/` directory. It is organized into
    }
    ```
 
-4. **Restart the server**. Run `npm run dev` again, and the system will automatically scan the folders and generate the website content!
+4. **Restart the server**. Run `npm run dev` again, and the system will automatically scan the folders and generate the website content.
 
 ## Replacing Profile Information
 
-To change your name, course, professor, or other details, simply edit this file:
+To change your name, course, professor, or other details, edit:
 `src/config/portfolio.ts`
 
 ```typescript
@@ -71,18 +105,21 @@ export const portfolioConfig = {
 
 ## Adding/Changing 3D Models
 
-The current 3D room is built using high-quality procedural geometry (Three.js primitives) to ensure it is lightweight and always works. 
+The current 3D room is built using procedural geometry (Three.js primitives) so it stays lightweight and works without external model files.
+
 If you want to add custom GLB/GLTF models:
 1. Place your `.glb` files in the `public/models/` directory.
 2. Edit `src/components/3d/Room.tsx` to load them using `@react-three/drei`'s `useGLTF` hook.
 
 ## Deployment
 
-This project is perfectly set up for free deployment on **Vercel**.
+This project is set up for deployment on **Vercel**.
 
 1. Push this repository to GitHub.
-2. Go to [Vercel.com](https://vercel.com) and import the repository.
-3. Vercel will automatically detect that it's a Next.js project.
-4. Click **Deploy**. The `npm run build` script will automatically run the content scanner and build your site.
+2. Import the repository in Vercel.
+3. Vercel should detect the Next.js project automatically.
+4. Deploy. The `npm run build` script will run the content scanner before the Next.js build.
 
-Enjoy your professional digital portfolio!
+## Dependency note
+
+Do not downgrade `@react-three/fiber` back to 8.x while the project is on React 19. Fiber 8 targets React 18; Fiber 9 is the React 19-compatible line.
