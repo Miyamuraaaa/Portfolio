@@ -40,3 +40,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .claude/
+
+# Rebuilt from portfolio-content by predev/prebuild.
+/public/generated-content/
+/src/generated/content-manifest.json

@@ -5,12 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowLeft, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
-import { getProjectBySlug, getRelatedProjects, projects } from "@/data/projects";
+import { getProjectBySlug, getRelatedProjects } from "@/data/projects";
 import SmoothScroll from "@/components/layout/SmoothScroll";
 import Navbar from "@/components/layout/Navbar";
 import MagneticCursor from "@/components/layout/MagneticCursor";
 import Footer from "@/components/layout/Footer";
-import SplitText from "@/components/ui/SplitText";
+
 
 function GalleryCarousel({ images }: { images: string[] }) {
   const [current, setCurrent] = useState(0);
@@ -150,13 +150,13 @@ export default function ProjectDetail({
             </h1>
             <div className="flex flex-wrap items-center gap-4 text-sm text-foreground/50">
               <span>{project.date}</span>
-              <span>·</span>
+              <span>Â·</span>
               <span>{project.team}</span>
-              <span>·</span>
+              <span>Â·</span>
               <span>{project.client}</span>
               {project.liveUrl && (
                 <>
-                  <span>·</span>
+                  <span>Â·</span>
                   <a
                     href={project.liveUrl}
                     target="_blank"

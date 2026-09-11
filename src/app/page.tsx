@@ -7,13 +7,14 @@ import Preloader from "@/components/layout/Preloader";
 import MagneticCursor from "@/components/layout/MagneticCursor";
 import PageTransition from "@/components/layout/PageTransition";
 import Hero from "@/components/sections/Hero";
+import ReadingJourney from "@/components/sections/ReadingJourney";
 import Projects from "@/components/sections/Projects";
-import About from "@/components/sections/About";
-import Contact from "@/components/sections/Contact";
+import AcademicIndex from "@/components/sections/AcademicIndex";
 import Footer from "@/components/layout/Footer";
+import ScrollReveals from "@/components/ui/ScrollReveals";
 
 function SectionDivider() {
-  return <div className="section-divider" />;
+  return <div data-reveal-group><div className="section-divider" data-reveal="line" /></div>;
 }
 
 export default function Home() {
@@ -31,13 +32,14 @@ export default function Home() {
         <Navbar />
         <PageTransition>
           <main>
-            <Hero />
-            <SectionDivider />
-            <Projects />
-            <SectionDivider />
-            <About />
-            <SectionDivider />
-            <Contact />
+            <Hero ready={!loading} />
+            <ReadingJourney />
+            <ScrollReveals>
+              <SectionDivider />
+              <AcademicIndex />
+              <SectionDivider />
+              <Projects />
+            </ScrollReveals>
           </main>
           <Footer />
         </PageTransition>

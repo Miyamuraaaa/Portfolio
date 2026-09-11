@@ -1,42 +1,13 @@
-import { GithubIcon, LinkedinIcon, TwitterIcon } from "@/components/ui/SocialIcons";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-border py-8 px-6">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-        <p className="text-sm text-foreground/40">
-          &copy; {new Date().getFullYear()} Karan Chandekar. All rights reserved.
-        </p>
-        <div className="flex items-center gap-4">
-          <a
-            href="https://github.com/karanchandekar"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="GitHub"
-            className="text-foreground/40 hover:text-accent transition-colors"
-          >
-            <GithubIcon size={18} />
-          </a>
-          <a
-            href="https://linkedin.com/in/karanchandekar"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="LinkedIn"
-            className="text-foreground/40 hover:text-accent transition-colors"
-          >
-            <LinkedinIcon size={18} />
-          </a>
-          <a
-            href="https://twitter.com/karanchandekar"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Twitter"
-            className="text-foreground/40 hover:text-accent transition-colors"
-          >
-            <TwitterIcon size={18} />
-          </a>
-        </div>
-      </div>
+    <footer className="portfolio-footer editorial-shell">
+      <div><p className="eyebrow">GED0001 / DIGITAL READING PORTFOLIO</p>
+        <p className="mt-3 text-sm text-foreground/65">By Cliford V. Balce</p></div>
+      <p className="footer-note">Beyond the Pages</p>
+      <Link href="/#home" data-cursor="link" className="flex items-center gap-3 text-sm">Back to top <ArrowUpRight size={17} /></Link>
     </footer>
   );
 }

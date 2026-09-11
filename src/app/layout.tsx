@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { spaceGrotesk, jetbrainsMono } from "@/lib/fonts";
 import "./globals.css";
+import CosmicAtmosphere from "@/components/ui/CosmicAtmosphere";
 
 export const metadata: Metadata = {
-  title: "Karan Chandekar | Software Engineer",
+  title: "GED0001 | DIGITAL READING PORTFOLIO | By Cliford V. Balce",
   description:
-    "Software Engineer with 3+ years of experience building AI-powered full-stack applications with React, Next.js, TypeScript, and Python.",
+    "A visual collection of my reading activities, responses, projects, iCARE activities, and reflections throughout GED0001. By Cliford V. Balce.",
 };
 
 export default function RootLayout({
@@ -19,7 +20,8 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} antialiased`}
     >
       <body className="min-h-screen bg-background text-foreground">
-        {children}
+        <CosmicAtmosphere />
+        <div className="site-foreground">{children}</div>
       </body>
     </html>
   );

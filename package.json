@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "content:generate": "node scripts/generate-content-manifest.mjs",
+    "predev": "npm run content:generate",
+    "prebuild": "npm run content:generate",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

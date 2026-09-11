@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -14,6 +14,7 @@ interface SplitTextProps {
   stagger?: number;
   delay?: number;
   scrollTrigger?: boolean;
+  enabled?: boolean;
 }
 
 export default function SplitText({
@@ -24,11 +25,13 @@ export default function SplitText({
   stagger = 0.05,
   delay = 0,
   scrollTrigger = true,
+  enabled = true,
 }: SplitTextProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || !enabled) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const chars = containerRef.current.querySelectorAll(".split-char");
 
@@ -65,27 +68,25 @@ export default function SplitText({
       };
     }
 
-    gsap.fromTo(chars, fromVars, toVars);
+    const animation = gsap.fromTo(chars, fromVars, toVars);
 
     return () => {
-      ScrollTrigger.getAll().forEach((t) => {
-        if (t.trigger === containerRef.current) t.kill();
-      });
+      animation.scrollTrigger?.kill();
+      animation.revert();
     };
-  }, [children, direction, stagger, delay, scrollTrigger]);
+  }, [children, direction, stagger, delay, scrollTrigger, enabled]);
 
   const words = children.split(" ");
 
-  // Use a wrapper div that holds the ref, render the semantic Tag inside
+  // Preserve semantic headings and keep server-rendered copy readable.
   return (
-    <div ref={containerRef} className={`inline ${className}`} role="text">
+    <Tag ref={(element) => { containerRef.current = element; }} className={className} aria-label={children}>
       {words.map((word, wi) => (
-        <span key={wi} className="inline-block whitespace-nowrap">
+        <span key={wi} className="inline-block whitespace-nowrap" aria-hidden="true">
           {word.split("").map((char, ci) => (
             <span
               key={ci}
               className="split-char inline-block"
-              style={{ opacity: 0 }}
             >
               {char}
             </span>
@@ -95,6 +96,6 @@ export default function SplitText({
           )}
         </span>
       ))}
-    </div>
+    </Tag>
   );
 }

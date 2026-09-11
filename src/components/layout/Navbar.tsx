@@ -2,26 +2,44 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
   { href: "#home", label: "Home" },
-  { href: "#projects", label: "Projects" },
-  { href: "#about", label: "About" },
-  { href: "#contact", label: "Contact" },
+  { href: "#journey", label: "Journey" },
+  { href: "#worksheets", label: "Worksheets" },
+  { href: "#responses", label: "Responses" },
+  { href: "#icare", label: "iCARE" },
+  { href: "#reflection", label: "Reflection" },
 ];
 
 export default function Navbar() {
+  const pathname = usePathname();
+  const anchor = (hash: string) => pathname === "/" ? hash : "/" + hash;
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState("#home");
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
+      let current = "#home";
+      for (const link of navLinks) {
+        const section = document.getElementById(link.href.slice(1));
+        if (section && section.getBoundingClientRect().top <= window.innerHeight * 0.3) current = link.href;
+      }
+      setActive(current);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleScroll);
+    const frame = requestAnimationFrame(handleScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
   }, []);
 
   return (
@@ -33,19 +51,21 @@ export default function Navbar() {
       <div className="mx-auto max-w-7xl px-6 flex items-center justify-between">
         <Link
           href="/"
-          className="text-xl font-bold tracking-tight hover:text-accent transition-colors"
+          className="nav-brand hover:text-accent transition-colors"
           data-cursor="link"
         >
-          Karan<span className="text-accent">.</span>
+          <span className="brand-mark" aria-hidden="true">B<span>.</span></span>
+          <span>GED0001<span className="block text-[9px] tracking-[0.18em] text-foreground/60">READING PORTFOLIO</span></span>
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden lg:flex items-center gap-6">
           {navLinks.map((link) => (
             <a
               key={link.href}
-              href={link.href}
-              className="relative text-sm font-medium text-foreground/70 hover:text-foreground transition-colors group"
+              href={anchor(link.href)}
+              className="nav-section-link relative text-sm font-medium text-foreground/70 hover:text-foreground transition-colors group"
+              aria-current={pathname === "/" && active === link.href ? "location" : undefined}
               data-cursor="link"
             >
               {link.label}
@@ -53,21 +73,22 @@ export default function Navbar() {
             </a>
           ))}
           <a
-            href="/resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm font-medium px-4 py-2 rounded-lg border border-accent text-accent hover:bg-accent hover:text-foreground transition-all duration-300"
+            href={anchor("#projects")}
+            className="text-xs font-medium px-4 py-3 border border-foreground/25 hover:border-accent transition-all duration-300"
             data-cursor="link"
           >
-            Resume
+            Explore Portfolio
           </a>
         </div>
 
         {/* Mobile toggle */}
         <button
-          className="md:hidden relative z-50 p-2"
+          className="lg:hidden relative z-50 p-2"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle menu"
+          aria-expanded={isOpen}
+          aria-controls="mobile-navigation"
+          onKeyDown={(event) => { if (event.key === "Escape") setIsOpen(false); }}
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -81,7 +102,7 @@ export default function Navbar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/60 z-40 md:hidden"
+              className="fixed inset-0 bg-black/60 z-40 lg:hidden"
               onClick={() => setIsOpen(false)}
             />
             <motion.div
@@ -89,32 +110,34 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "tween", duration: 0.3 }}
-              className="fixed top-0 right-0 h-full w-72 bg-background border-l border-border z-40 p-8 pt-24 md:hidden"
+              id="mobile-navigation"
+              onKeyDown={(event) => { if (event.key === "Escape") setIsOpen(false); }}
+              className="fixed top-0 right-0 h-dvh w-72 bg-background border-l border-border z-40 p-8 pt-24 lg:hidden overflow-y-auto"
             >
               <div className="flex flex-col gap-6">
                 {navLinks.map((link, i) => (
                   <motion.a
                     key={link.href}
-                    href={link.href}
+                    href={anchor(link.href)}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.1 }}
-                    className="text-lg font-medium hover:text-accent transition-colors"
+                    className="nav-section-link text-lg font-medium text-foreground/70 hover:text-accent transition-colors"
+                    aria-current={pathname === "/" && active === link.href ? "location" : undefined}
                     onClick={() => setIsOpen(false)}
                   >
                     {link.label}
                   </motion.a>
                 ))}
                 <motion.a
-                  href="/resume.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={anchor("#projects")}
+                  onClick={() => setIsOpen(false)}
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: navLinks.length * 0.1 }}
                   className="text-lg font-medium text-accent"
                 >
-                  Resume
+                  Explore Portfolio
                 </motion.a>
               </div>
             </motion.div>
