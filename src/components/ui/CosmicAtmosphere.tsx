@@ -12,24 +12,32 @@ export default function CosmicAtmosphere() {
     let frame = 0;
     let timer: ReturnType<typeof setTimeout> | undefined;
     let flight: Animation | undefined;
-    const motion = window.matchMedia("(min-width: 1025px) and (prefers-reduced-motion: no-preference)");
+    const motion = window.matchMedia("(prefers-reduced-motion: no-preference)");
+    const desktop = window.matchMedia("(min-width: 1025px)");
     const streak = element.querySelector<HTMLElement>(".cosmic-streak");
     const depths = element.querySelectorAll<HTMLElement>(".cosmic-depth");
-    // One flight across the entire site, independent of the section containers.
+
+    // One lightweight meteor across the entire site. Mobile keeps it rarer and shorter.
     const schedule = () => {
+      const isDesktop = desktop.matches;
+      const minDelay = isDesktop ? (cinematic ? 6000 : 12000) : (cinematic ? 9000 : 15000);
+      const variance = isDesktop ? (cinematic ? 8000 : 13000) : (cinematic ? 9000 : 12000);
       timer = setTimeout(() => {
-        if (!streak) return;
+        if (!streak || !motion.matches || document.hidden) return;
         const right = Math.random() > .35;
-        streak.style.left = `${right ? 86 + Math.random() * 8 : 9 + Math.random() * 6}%`;
-        streak.style.top = `${26 + Math.random() * 22}%`;
+        streak.style.left = `${right ? 84 + Math.random() * 9 : 7 + Math.random() * 8}%`;
+        streak.style.top = `${20 + Math.random() * 34}%`;
+        const travelX = isDesktop ? -65 : -45;
+        const travelY = isDesktop ? 72 : 50;
         flight = streak.animate([
           { opacity: 0, transform: "translate(0, 0) rotate(132deg)" },
-          { opacity: cinematic ? .7 : .5, offset: .2 },
-          { opacity: 0, transform: "translate(-65px, 72px) rotate(132deg)" },
-        ], { duration: 700 + Math.random() * 800, easing: "ease-out" });
+          { opacity: isDesktop ? (cinematic ? .7 : .5) : (cinematic ? .48 : .34), offset: .2 },
+          { opacity: 0, transform: `translate(${travelX}px, ${travelY}px) rotate(132deg)` },
+        ], { duration: isDesktop ? 700 + Math.random() * 800 : 650 + Math.random() * 550, easing: "ease-out" });
         schedule();
-      }, cinematic ? 6000 + Math.random() * 8000 : 12000 + Math.random() * 13000);
+      }, minDelay + Math.random() * variance);
     };
+
     const update = () => {
       const active = !document.hidden && motion.matches;
       element.dataset.active = String(active);
@@ -37,6 +45,7 @@ export default function CosmicAtmosphere() {
       flight?.cancel();
       if (active) schedule();
     };
+
     const sampleScroll = () => {
       frame = 0;
       if (document.hidden) return;
@@ -52,20 +61,34 @@ export default function CosmicAtmosphere() {
       element.style.setProperty("--cosmic-intensity", String(intensity[sectionId] ?? .8));
       const nextCinematic = sectionId === "home" || sectionId === "journey";
       if (nextCinematic !== cinematic) { cinematic = nextCinematic; update(); }
+
+      // Desktop gets subtle depth parallax. Mobile keeps the star field stationary for smooth touch scrolling.
       const progress = Math.min(1, window.scrollY / Math.max(1, document.documentElement.scrollHeight - window.innerHeight));
       depths.forEach((depth, index) => {
-        depth.style.translate = motion.matches ? `0 ${-progress * [3, 10, 20][index]}px` : "none";
+        depth.style.translate = desktop.matches ? `0 ${-progress * [3, 10, 20][index]}px` : "none";
       });
     };
+
     const requestSample = () => { if (!frame && !document.hidden) frame = requestAnimationFrame(sampleScroll); };
     const refresh = () => { update(); requestSample(); };
     window.addEventListener("scroll", requestSample, { passive: true });
     window.addEventListener("resize", refresh);
     document.addEventListener("visibilitychange", refresh);
     motion.addEventListener("change", refresh);
+    desktop.addEventListener("change", refresh);
     refresh();
-    return () => { clearTimeout(timer); cancelAnimationFrame(frame); flight?.cancel(); window.removeEventListener("scroll", requestSample); window.removeEventListener("resize", refresh); motion.removeEventListener("change", refresh); document.removeEventListener("visibilitychange", refresh); };
+    return () => {
+      clearTimeout(timer);
+      cancelAnimationFrame(frame);
+      flight?.cancel();
+      window.removeEventListener("scroll", requestSample);
+      window.removeEventListener("resize", refresh);
+      motion.removeEventListener("change", refresh);
+      desktop.removeEventListener("change", refresh);
+      document.removeEventListener("visibilitychange", refresh);
+    };
   }, []);
+
   return <div ref={layer} className="cosmic-atmosphere" aria-hidden="true">
     {[70, 35, 10].map((count, depth) => <div key={depth} className={`cosmic-depth cosmic-depth-${depth}`}>
       {Array.from({ length: count }, (_, i) => <i key={i} className="cosmic-star" style={{
