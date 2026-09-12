@@ -2,10 +2,31 @@
 
 import { useEffect, useRef, type CSSProperties } from "react";
 
-// Stable seeded values keep SSR and hydration identical, without a visible grid.
+// Integer operations are bit-identical across JS engines; transcendental math is not.
 function seed(value: number) {
-  const n = Math.sin(value * 127.1 + 311.7) * 43758.5453;
-  return n - Math.floor(n);
+  let x = value | 0;
+  x = Math.imul(x ^ (x >>> 16), 0x45d9f3b);
+  x = Math.imul(x ^ (x >>> 16), 0x45d9f3b);
+  x ^= x >>> 16;
+  return (x >>> 0) / 4294967296;
+}
+
+const fixed = (value: number, digits = 4) => value.toFixed(digits);
+
+function starStyle(index: number, depth: number): CSSProperties {
+  const left = depth === 0 && index % 11 === 0
+    ? 28 + seed(index + 59) * 44
+    : seed(index + depth * 93) > .48
+      ? 79 + seed(index + depth * 37 + 10) * 20
+      : 1 + seed(index + depth * 37 + 10) * 20;
+  return {
+    left: `${fixed(left)}%`,
+    top: `${fixed(2 + seed(index + depth * 53 + 3) * 95)}%`,
+    "--star-delay": `${fixed(-index * 1.7, 3)}s`,
+    "--star-opacity": fixed([.18, .3, .5][depth] + (index % 5) * [.04, .06, .06][depth], 2),
+    "--twinkle-duration": `${fixed(5 + seed(index + 12) * 8, 3)}s`,
+    "--star-size": `${fixed([1, 1.5, 2][depth] + (index % 3) * .25, 2)}px`,
+  } as CSSProperties;
 }
 
 /** Decorative only: deterministic points, no textures or additional WebGL context. */
@@ -86,14 +107,7 @@ export default function CosmicAtmosphere() {
   return <div ref={layer} className="cosmic-atmosphere" aria-hidden="true">
     <div className="cosmic-haze" />
     {[70, 35, 15].map((count, depth) => <div key={depth} className={`cosmic-depth cosmic-depth-${depth}`}>
-      {Array.from({ length: count }, (_, i) => <i key={i} className="cosmic-star" style={{
-        // Edge-weighted distribution keeps the central reading area quiet.
-        left: `${depth === 0 && i % 11 === 0 ? 28 + seed(i + 59) * 44 : seed(i + depth * 93) > .48 ? 79 + seed(i + depth * 37 + 10) * 20 : 1 + seed(i + depth * 37 + 10) * 20}%`,
-        top: `${2 + seed(i + depth * 53 + 3) * 95}%`,
-        "--star-delay": `${-i * 1.7}s`, "--star-opacity": [.18, .3, .5][depth] + (i % 5) * [ .04, .06, .06 ][depth],
-        "--twinkle-duration": `${5 + seed(i + 12) * 8}s`,
-        "--star-size": `${[1, 1.5, 2][depth] + (i % 3) * .25}px`,
-      } as CSSProperties} />)}
+      {Array.from({ length: count }, (_, i) => <i key={i} className="cosmic-star" style={starStyle(i, depth)} />)}
     </div>)}
     <span className="cosmic-streak" />
   </div>;
