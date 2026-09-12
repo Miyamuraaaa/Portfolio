@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { spaceGrotesk, jetbrainsMono } from "@/lib/fonts";
 import "./globals.css";
+import "./mobile-motion.css";
 import CosmicAtmosphere from "@/components/ui/CosmicAtmosphere";
 
 export const metadata: Metadata = {
