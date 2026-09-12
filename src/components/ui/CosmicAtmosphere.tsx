@@ -13,6 +13,13 @@ function seed(value: number) {
 
 const fixed = (value: number, digits = 4) => value.toFixed(digits);
 
+// Original decorative patterns; fixed integer coordinates also preserve hydration.
+const constellations = [
+  [[12, 23], [44, 12], [68, 42], [103, 35], [119, 77]],
+  [[14, 80], [35, 48], [67, 60], [91, 24], [122, 39]],
+  [[16, 29], [41, 59], [70, 45], [95, 80], [124, 63]],
+];
+
 function starStyle(index: number, depth: number): CSSProperties {
   const left = depth === 0 && index % 11 === 0
     ? 28 + seed(index + 59) * 44
@@ -106,6 +113,10 @@ export default function CosmicAtmosphere() {
   }, []);
   return <div ref={layer} className="cosmic-atmosphere" aria-hidden="true">
     <div className="cosmic-haze" />
+    {constellations.map((points, index) => <svg key={index} className={`cosmic-constellation cosmic-constellation-${index}`} viewBox="0 0 140 100" fill="none" focusable="false" aria-hidden="true">
+      <polyline points={points.map(point => point.join(",")).join(" ")} stroke="currentColor" strokeWidth=".7" opacity=".5" />
+      {points.map(([cx, cy], star) => <circle key={star} cx={cx} cy={cy} r={star % 2 ? "1.4" : "1.8"} fill="currentColor" />)}
+    </svg>)}
     {[70, 35, 15].map((count, depth) => <div key={depth} className={`cosmic-depth cosmic-depth-${depth}`}>
       {Array.from({ length: count }, (_, i) => <i key={i} className="cosmic-star" style={starStyle(i, depth)} />)}
     </div>)}

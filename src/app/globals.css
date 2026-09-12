@@ -443,6 +443,12 @@ section[id]:focus { outline: none; }
 .cosmic-atmosphere { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; opacity: var(--cosmic-intensity, 1); transition: opacity 1.8s ease; background: radial-gradient(ellipse at 88% 34%, #9683b01c, transparent 46%), radial-gradient(ellipse at 8% 78%, #7d91a619, transparent 40%), radial-gradient(ellipse at 9% 8%, #b29c760b, transparent 32%); }
 .cosmic-haze { position: absolute; inset: -4%; background: radial-gradient(ellipse at 88% 34%, #9683b01c, transparent 46%), radial-gradient(ellipse at 8% 78%, #7d91a619, transparent 40%), radial-gradient(ellipse at 9% 8%, #b29c760b, transparent 32%); animation: cosmic-haze-drift 95s ease-in-out infinite alternate; }
 .cosmic-atmosphere { background: none; }
+.cosmic-constellation { position: absolute; width: clamp(80px, 9vw, 140px); height: auto; color: #c9b9d5; opacity: .27; pointer-events: none; animation: constellation-drift 93s ease-in-out -24s infinite alternate; animation-play-state: paused; }
+.cosmic-constellation-0 { left: 1%; top: 18%; }
+.cosmic-constellation-1 { right: 1%; top: 56%; color: #d0c1a6; animation-duration: 117s; animation-delay: -63s; }
+.cosmic-constellation-2 { left: 3%; bottom: 8%; animation-duration: 131s; animation-delay: -17s; }
+.cosmic-atmosphere[data-active="true"] .cosmic-constellation { animation-play-state: running; }
+@keyframes constellation-drift { from { transform: translate(0, 0); } to { transform: translate(4px, -6px); } }
 .cosmic-depth { --drift-x: 5px; --drift-y: -7px; position: absolute; inset: 0; animation: cosmic-drift 100s ease-in-out -35s infinite alternate; }
 .cosmic-depth-1 { --drift-x: -12px; --drift-y: 10px; animation-duration: 65s; animation-delay: -22s; }
 .cosmic-depth-2 { --drift-x: 20px; --drift-y: -18px; animation-duration: 42s; animation-delay: -14s; }
@@ -459,9 +465,12 @@ section[id]:focus { outline: none; }
 @keyframes cosmic-drift { from { transform: translate(0, 0); } to { transform: translate(var(--drift-x), var(--drift-y)); } }
 @keyframes cosmic-haze-drift { from { transform: translate(-1%, 0) scale(1); opacity: .65; } to { transform: translate(1%, -1%) scale(1.03); opacity: 1; } }
 @media (min-width: 768px) and (max-width: 1024px) {
+  .cosmic-constellation-2 { display: none; }
   .cosmic-depth-0 .cosmic-star:nth-child(n+39), .cosmic-depth-1 .cosmic-star:nth-child(n+21), .cosmic-depth-2 .cosmic-star:nth-child(n+10) { display: none; }
 }
 @media (max-width: 767px) {
+  .cosmic-constellation { width: 66px; opacity: .18; }
+  .cosmic-constellation-0, .cosmic-constellation-2 { display: none; }
   .cosmic-depth-0 .cosmic-star:nth-child(n+27), .cosmic-depth-1 .cosmic-star:nth-child(n+13), .cosmic-depth-2 .cosmic-star:nth-child(n+7) { display: none; }
 }
 @media (max-width: 1024px) and (prefers-reduced-motion: no-preference) {
@@ -479,7 +488,7 @@ section[id]:focus { outline: none; }
   .cosmic-atmosphere { transition: none; }
   .page-transition { opacity: 1 !important; transform: none !important; }
   .cosmic-streak { display: none; }
-  .cosmic-star, .cosmic-depth, .cosmic-haze { animation: none !important; }
+  .cosmic-star, .cosmic-depth, .cosmic-haze, .cosmic-constellation { animation: none !important; }
 }
 @media (max-width: 767px) {
   .journey-topline { flex-direction: row; flex-wrap: wrap; gap: 16px; }
