@@ -36,6 +36,23 @@ export default function Hero({ ready = true }: { ready?: boolean }) {
   }, [showScene]);
 
   useEffect(() => {
+    if (!ready) return;
+    const media = gsap.matchMedia();
+    media.add("(max-width: 767px) and (prefers-reduced-motion: no-preference)", () => {
+      const root = heroRef.current;
+      if (!root) return;
+      const select = gsap.utils.selector(root);
+      const timeline = gsap.timeline({ defaults: { ease: "power2.out" } });
+      timeline
+        .from(select(".hero-byline"), { opacity: 0, y: 14, duration: .55 }, .35)
+        .from(select(".hero-intro"), { opacity: 0, y: 18, duration: .65 }, .43)
+        .from(select(".hero-actions"), { opacity: 0, y: 16, duration: .6 }, .52)
+        .from(select(".paper-study"), { opacity: 0, scale: .94, rotation: -4, duration: .9 }, .38);
+    }, heroRef);
+    return () => media.revert();
+  }, [ready]);
+
+  useEffect(() => {
     // Keep the original mobile fallback strategy without mounting a hidden Canvas.
     const media = window.matchMedia("(min-width: 768px) and (prefers-reduced-motion: no-preference)");
     const update = () => setShowScene(media.matches);
