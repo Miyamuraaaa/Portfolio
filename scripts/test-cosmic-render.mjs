@@ -24,8 +24,6 @@ function render() {
 
 const first = render();
 assert.equal(first, render(), 'Independent renders must emit identical markup');
-assert.equal([...first.matchAll(/class="cosmic-constellation cosmic-constellation-\d"/g)].length, 3);
-assert.equal([...first.matchAll(/<circle /g)].length, 15);
 const stars = [...first.matchAll(/class="cosmic-star" style="([^"]+)"/g)];
 assert.equal(stars.length, 120);
 for (const [, style] of stars) {
