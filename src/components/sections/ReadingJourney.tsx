@@ -31,6 +31,7 @@ export default function ReadingJourney() {
   useEffect(() => {
     const media = gsap.matchMedia();
     let disposed = false;
+
     media.add("(min-width: 1025px) and (min-height: 620px) and (prefers-reduced-motion: no-preference)", () => {
       const element = section.current;
       if (!element) return;
@@ -64,6 +65,98 @@ export default function ReadingJourney() {
         .to(select(".journey-paper-secondary"), { y: 8, rotation: 6, duration: .18 }, .8)
         .fromTo(select(".journey-settle"), { opacity: 0 }, { opacity: 1, duration: .2 }, .8);
     }, section);
+
+    // Phones and tablets get a lighter reveal sequence instead of desktop pinning.
+    media.add("(max-width: 1024px) and (prefers-reduced-motion: no-preference)", () => {
+      const element = section.current;
+      if (!element) return;
+      const frame = element.querySelector<HTMLElement>(".journey-frame");
+      if (!frame) return;
+      const select = gsap.utils.selector(frame);
+      const triggerOnce = (trigger: Element, start = "top 88%") => ({
+        trigger,
+        start,
+        once: true,
+        invalidateOnRefresh: true,
+      });
+
+      const primary = select(".journey-paper-primary")[0];
+      const secondary = select(".journey-paper-secondary")[0];
+      const copy = select(".journey-copy")[0];
+      const timeline = select(".journey-timeline")[0];
+
+      if (primary) {
+        gsap.from(primary, {
+          opacity: 0,
+          x: -28,
+          y: 20,
+          rotation: -20,
+          duration: .8,
+          ease: "power2.out",
+          clearProps: "opacity,visibility,transform",
+          scrollTrigger: triggerOnce(primary, "top 92%"),
+        });
+      }
+
+      if (copy) {
+        gsap.from(select(".journey-title, .journey-intro"), {
+          opacity: 0,
+          y: 24,
+          filter: "blur(4px)",
+          stagger: .08,
+          duration: .72,
+          ease: "power2.out",
+          clearProps: "opacity,transform,filter",
+          scrollTrigger: triggerOnce(copy, "top 86%"),
+        });
+      }
+
+      if (secondary) {
+        gsap.from(secondary, {
+          opacity: 0,
+          x: 28,
+          y: 20,
+          rotation: 18,
+          duration: .8,
+          ease: "power2.out",
+          clearProps: "opacity,visibility,transform",
+          scrollTrigger: triggerOnce(secondary, "top 88%"),
+        });
+      }
+
+      if (timeline) {
+        gsap.from(select(".journey-timeline-line"), {
+          scaleX: 0,
+          transformOrigin: "left",
+          duration: .85,
+          ease: "power2.out",
+          clearProps: "transform",
+          scrollTrigger: triggerOnce(timeline, "top 90%"),
+        });
+        gsap.from(select(".journey-milestone"), {
+          opacity: 0,
+          y: 18,
+          stagger: .08,
+          duration: .55,
+          ease: "power2.out",
+          clearProps: "opacity,transform",
+          scrollTrigger: triggerOnce(timeline, "top 84%"),
+        });
+      }
+
+      const settle = select(".journey-settle")[0];
+      if (settle) {
+        gsap.from(settle, {
+          opacity: 0,
+          y: 10,
+          duration: .55,
+          ease: "power2.out",
+          clearProps: "opacity,transform",
+          scrollTrigger: triggerOnce(settle, "top 94%"),
+        });
+      }
+    }, section);
+
     // Re-measure the pin and all downstream card triggers after fonts settle.
     document.fonts.ready.then(() => { if (!disposed) ScrollTrigger.refresh(); });
     return () => { disposed = true; media.revert(); };
