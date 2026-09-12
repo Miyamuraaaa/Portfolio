@@ -1,0 +1,65 @@
+/* Mobile-only motion layer. Imported after globals.css so these rules can
+   selectively re-enable lightweight effects that the desktop stylesheet
+   intentionally disables below 1025px. */
+
+@media (max-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  /* Keep the mobile star field light: only the nearest sparse layer is visible. */
+  .cosmic-depth-1,
+  .cosmic-depth-2 {
+    display: none;
+  }
+
+  .cosmic-depth {
+    animation: none !important;
+  }
+
+  .cosmic-star {
+    animation: none !important;
+  }
+
+  .cosmic-atmosphere[data-active="true"] .cosmic-depth-0 .cosmic-star:nth-child(4n) {
+    animation: mobile-cosmic-glint 8s ease-in-out infinite !important;
+    animation-delay: var(--star-delay) !important;
+  }
+
+  /* The base stylesheet hides meteors on mobile; restore a smaller, rarer one. */
+  .cosmic-streak {
+    display: block;
+    width: 46px;
+    opacity: 0;
+  }
+
+  .cosmic-streak::after {
+    box-shadow: 0 0 4px #ead7bb88;
+  }
+}
+
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  /* Give the static phone fallback a little life without mounting WebGL. */
+  .paper-study {
+    animation: mobile-paper-breathe 8s ease-in-out infinite alternate;
+    transform-origin: center;
+  }
+}
+
+@keyframes mobile-cosmic-glint {
+  0%, 100% { opacity: var(--star-opacity); transform: scale(1); }
+  50% { opacity: .1; transform: scale(.75); }
+}
+
+@keyframes mobile-paper-breathe {
+  from { translate: 0 0; }
+  to { translate: -3px 5px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paper-study,
+  .cosmic-star,
+  .cosmic-depth {
+    animation: none !important;
+  }
+
+  .cosmic-streak {
+    display: none !important;
+  }
+}
