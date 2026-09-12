@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
@@ -16,6 +16,7 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const reducedMotion = useReducedMotion();
   const pathname = usePathname();
   const anchor = (hash: string) => pathname === "/" ? hash : "/" + hash;
   const [isOpen, setIsOpen] = useState(false);
@@ -83,7 +84,7 @@ export default function Navbar() {
 
         {/* Mobile toggle */}
         <button
-          className="lg:hidden relative z-50 p-2"
+          className="lg:hidden relative z-50 p-2 min-h-11 min-w-11"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle menu"
           aria-expanded={isOpen}
@@ -99,17 +100,17 @@ export default function Navbar() {
         {isOpen && (
           <>
             <motion.div
-              initial={{ opacity: 0 }}
+              initial={reducedMotion ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="fixed inset-0 bg-black/60 z-40 lg:hidden"
               onClick={() => setIsOpen(false)}
             />
             <motion.div
-              initial={{ x: "100%" }}
+              initial={reducedMotion ? false : { x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
-              transition={{ type: "tween", duration: 0.3 }}
+              transition={{ type: "tween", duration: reducedMotion ? 0 : 0.3 }}
               id="mobile-navigation"
               onKeyDown={(event) => { if (event.key === "Escape") setIsOpen(false); }}
               className="fixed top-0 right-0 h-dvh w-72 bg-background border-l border-border z-40 p-8 pt-24 lg:hidden overflow-y-auto"
@@ -119,10 +120,10 @@ export default function Navbar() {
                   <motion.a
                     key={link.href}
                     href={anchor(link.href)}
-                    initial={{ opacity: 0, x: 20 }}
+                    initial={reducedMotion ? false : { opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.1 }}
-                    className="nav-section-link text-lg font-medium text-foreground/70 hover:text-accent transition-colors"
+                    transition={{ delay: reducedMotion ? 0 : i * 0.1, duration: reducedMotion ? 0 : .3 }}
+                    className="nav-section-link min-h-11 flex items-center text-lg font-medium text-foreground/70 hover:text-accent transition-colors"
                     aria-current={pathname === "/" && active === link.href ? "location" : undefined}
                     onClick={() => setIsOpen(false)}
                   >

@@ -25,6 +25,15 @@ export default function Hero({ ready = true }: { ready?: boolean }) {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
+    if (!ready) return;
+    const media = gsap.matchMedia();
+    media.add("(max-width: 1024px) and (prefers-reduced-motion: no-preference)", () => {
+      gsap.fromTo(".hero-byline, .hero-tagline, .hero-description, .hero-actions, .scroll-cue", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .55, stagger: .12, delay: .9, ease: "power2.out" });
+    }, heroRef);
+    return () => media.revert();
+  }, [ready]);
+
+  useEffect(() => {
     if (!showScene) return;
     const media = gsap.matchMedia();
     media.add("(prefers-reduced-motion: no-preference)", () => {
@@ -41,9 +50,16 @@ export default function Hero({ ready = true }: { ready?: boolean }) {
     const update = () => setShowScene(media.matches);
     update();
     media.addEventListener("change", update);
-    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting));
+    let inView = true;
+    const updateVisibility = () => {
+      const active = inView && !document.hidden;
+      setVisible(active);
+      if (heroRef.current) heroRef.current.dataset.active = String(active);
+    };
+    const observer = new IntersectionObserver(([entry]) => { inView = entry.isIntersecting; updateVisibility(); });
     if (heroRef.current) observer.observe(heroRef.current);
-    return () => { media.removeEventListener("change", update); observer.disconnect(); };
+    document.addEventListener("visibilitychange", updateVisibility);
+    return () => { media.removeEventListener("change", update); document.removeEventListener("visibilitychange", updateVisibility); observer.disconnect(); };
   }, []);
 
   return (

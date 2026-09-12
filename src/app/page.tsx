@@ -41,7 +41,7 @@ export default function Home() {
               <Projects />
             </ScrollReveals>
           </main>
-          <Footer />
+          <ScrollReveals><div data-reveal-group><div data-reveal="content"><Footer /></div></div></ScrollReveals>
         </PageTransition>
       </SmoothScroll>
     </div>

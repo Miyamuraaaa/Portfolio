@@ -30,10 +30,12 @@ export default function SplitText({
   const containerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    if (!containerRef.current || !enabled) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const container = containerRef.current;
+    if (!container || !enabled) return;
+    const media = gsap.matchMedia();
+    media.add("(prefers-reduced-motion: no-preference)", () => {
 
-    const chars = containerRef.current.querySelectorAll(".split-char");
+    const chars = container.querySelectorAll(".split-char");
 
     const fromVars: gsap.TweenVars = {
       opacity: 0,
@@ -74,6 +76,8 @@ export default function SplitText({
       animation.scrollTrigger?.kill();
       animation.revert();
     };
+    }, containerRef);
+    return () => media.revert();
   }, [children, direction, stagger, delay, scrollTrigger, enabled]);
 
   const words = children.split(" ");

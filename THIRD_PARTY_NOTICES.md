@@ -1,5 +1,11 @@
 # Third-party notices
 
+## Locally hosted portfolio fonts
+
+The existing Space Grotesk and JetBrains Mono families are now served with `next/font/local` so builds do not require Google Fonts access. Unmodified variable font files were obtained from the Google Fonts repository:
+- Space Grotesk: https://github.com/google/fonts/tree/main/ofl/spacegrotesk — SIL Open Font License 1.1; full notice in `public/fonts/SpaceGrotesk-OFL.txt`.
+- JetBrains Mono: https://github.com/google/fonts/tree/main/ofl/jetbrainsmono — SIL Open Font License 1.1; full notice in `public/fonts/JetBrainsMono-OFL.txt`.
+
 ## Three.js Galaxy Generator
 - Author: Alvaro Saburido
 - Repository: https://github.com/alvarosabu/threejs-galaxy-generator

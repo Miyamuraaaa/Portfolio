@@ -31,9 +31,8 @@ export default function MagneticCursor() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const isTouchDevice =
-      "ontouchstart" in window || navigator.maxTouchPoints > 0;
-    if (isTouchDevice || window.innerWidth < 1024) return;
+    const media = gsap.matchMedia();
+    media.add("(min-width: 1025px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)", () => {
 
     document.documentElement.classList.add("cursor-none-desktop");
 
@@ -88,20 +87,23 @@ export default function MagneticCursor() {
       window.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseenter", handleEnter);
       document.removeEventListener("mouseleave", handleLeave);
-      interactiveElements.forEach((el) => {
+      document.querySelectorAll("[data-cursor]").forEach((el) => {
         el.removeEventListener("mouseenter", handleElementEnter);
         el.removeEventListener("mouseleave", handleElementLeave);
       });
       observer.disconnect();
       document.documentElement.classList.remove("cursor-none-desktop");
+      gsap.killTweensOf([cursorRef.current, cursorDotRef.current]);
     };
+    });
+    return () => media.revert();
   }, [handleMouseMove]);
 
   return (
     <>
       <div
         ref={cursorRef}
-        className={`fixed top-0 left-0 pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 hidden lg:block ${
+        className={`desktop-cursor fixed top-0 left-0 pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 hidden lg:block ${
           isVisible ? "opacity-100" : "opacity-0"
         }`}
       >
@@ -121,7 +123,7 @@ export default function MagneticCursor() {
       </div>
       <div
         ref={cursorDotRef}
-        className={`fixed top-0 left-0 w-1.5 h-1.5 bg-accent rounded-full pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 hidden lg:block ${
+        className={`desktop-cursor fixed top-0 left-0 w-1.5 h-1.5 bg-accent rounded-full pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 hidden lg:block ${
           isVisible ? "opacity-100" : "opacity-0"
         }`}
       />

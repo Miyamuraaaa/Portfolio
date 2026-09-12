@@ -1,13 +1,15 @@
-import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 
-export const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
+export const spaceGrotesk = localFont({
+  src: "../../public/fonts/SpaceGrotesk-variable.ttf",
+  weight: "300 700",
   display: "swap",
   variable: "--font-space-grotesk",
 });
 
-export const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
+export const jetbrainsMono = localFont({
+  src: "../../public/fonts/JetBrainsMono-variable.ttf",
+  weight: "100 800",
   display: "swap",
   variable: "--font-jetbrains-mono",
 });

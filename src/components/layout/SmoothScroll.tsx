@@ -10,9 +10,9 @@ gsap.registerPlugin(ScrollTrigger);
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const media = gsap.matchMedia();
-    media.add({ motion: "(prefers-reduced-motion: no-preference)", reduced: "(prefers-reduced-motion: reduce)" }, (context) => {
+    media.add({ motion: "(prefers-reduced-motion: no-preference)", reduced: "(prefers-reduced-motion: reduce)", touch: "(max-width: 1024px) and (pointer: coarse)" }, (context) => {
       const reduced = Boolean(context.conditions?.reduced);
-      const lenis = reduced ? null : new Lenis({
+      const lenis = reduced || context.conditions?.touch ? null : new Lenis({
         anchors: false,
         duration: 1.2,
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -51,7 +51,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
         };
         if (lenis) lenis.scrollTo(target, { offset: -100, onComplete: complete });
         else {
-          window.scrollTo({ top: Math.max(0, target.getBoundingClientRect().top + window.scrollY - 100), behavior: "instant" });
+          window.scrollTo({ top: Math.max(0, target.getBoundingClientRect().top + window.scrollY - 100), behavior: reduced ? "instant" : "smooth" });
           complete();
         }
       };

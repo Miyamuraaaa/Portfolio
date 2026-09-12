@@ -64,6 +64,22 @@ export default function ReadingJourney() {
         .to(select(".journey-paper-secondary"), { y: 8, rotation: 6, duration: .18 }, .8)
         .fromTo(select(".journey-settle"), { opacity: 0 }, { opacity: 1, duration: .2 }, .8);
     }, section);
+    media.add("(max-width: 1024px) and (prefers-reduced-motion: no-preference)", () => {
+      const select = gsap.utils.selector(section.current);
+      const paperOpacity = window.innerWidth < 768 ? .28 : .45;
+      gsap.timeline({ defaults: { duration: .55, ease: "power2.out" }, scrollTrigger: { trigger: section.current, start: "top 82%", once: true } })
+        .fromTo(select(".journey-topline > p"), { opacity: 0, y: 15 }, { opacity: 1, y: 0 }, 0)
+        .fromTo(select(".journey-paper-primary"), { opacity: 0, x: -20, y: 25, rotation: -18 }, { opacity: paperOpacity, x: 0, y: 0, rotation: -10 }, .12)
+        .fromTo(select(".journey-title"), { opacity: 0, y: 22, filter: "blur(2px)" }, { opacity: 1, y: 0, filter: "blur(0px)" }, .28)
+        .fromTo(select(".journey-intro"), { opacity: 0, y: 15 }, { opacity: 1, y: 0 }, .42)
+        .fromTo(select(".journey-paper-secondary"), { opacity: 0, x: 18, y: 20, rotation: 16 }, { opacity: paperOpacity, x: 0, y: 0, rotation: 10 }, .55);
+      // The lower group enters on its own so a short phone never misses it.
+      gsap.timeline({ defaults: { duration: .5, ease: "power2.out" }, scrollTrigger: { trigger: select(".journey-timeline")[0], start: "top 90%", once: true } })
+        .fromTo(select(".journey-timeline-line"), { scaleX: 0, transformOrigin: "left" }, { scaleX: 1 }, 0)
+        .fromTo(select(".journey-ink"), { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0 }, 0)
+        .fromTo(select(".journey-milestone"), { opacity: 0, y: 16 }, { opacity: 1, y: 0, stagger: .09 }, .12)
+        .fromTo(select(".journey-settle"), { opacity: 0, y: 8 }, { opacity: 1, y: 0 }, .65);
+    }, section);
     // Re-measure the pin and all downstream card triggers after fonts settle.
     document.fonts.ready.then(() => { if (!disposed) ScrollTrigger.refresh(); });
     return () => { disposed = true; media.revert(); };
