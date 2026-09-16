@@ -30,61 +30,31 @@ export default function ReadingJourney() {
   const section = useRef<HTMLElement>(null);
   useEffect(() => {
     const media = gsap.matchMedia();
-    let disposed = false;
-    media.add("(min-width: 1025px) and (min-height: 620px) and (prefers-reduced-motion: no-preference)", () => {
-      const element = section.current;
-      if (!element) return;
-      const frame = element.querySelector<HTMLElement>(".journey-frame");
-      if (!frame) return;
-      // Keep a stable scope even when ScrollTrigger reparents the pinned frame.
-      const select = gsap.utils.selector(frame);
-      const timeline = gsap.timeline({
-        defaults: { ease: "none" },
-        scrollTrigger: {
-          id: "reading-journey",
-          trigger: element,
-          pin: frame,
-          pinReparent: true,
-          start: "top 100px",
-          end: () => "+=" + Math.round(Math.min(1200, frame.clientHeight * 1.4)),
-          scrub: 0.4,
-          invalidateOnRefresh: true,
-          anticipatePin: 1,
-          refreshPriority: 1,
-        },
-      });
-      timeline
-        .fromTo(select(".journey-paper-primary"), { autoAlpha: 0, x: () => frame.clientWidth * .08, y: () => -frame.clientHeight * .04, rotation: -20 }, { autoAlpha: 1, x: 0, y: 0, rotation: -12, duration: .18 }, .02)
-        .fromTo(select(".journey-title, .journey-intro"), { opacity: 0, y: 40, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .15 }, .2)
-        .fromTo(select(".journey-timeline-line"), { scaleX: 0, transformOrigin: "left" }, { scaleX: 1, duration: .15 }, .35)
-        .fromTo(select(".journey-paper-secondary"), { autoAlpha: 0, x: () => -frame.clientWidth * .08, y: () => frame.clientHeight * .04, rotation: 20 }, { autoAlpha: 1, x: 0, y: 0, rotation: 10, duration: .15 }, .5)
-        .fromTo(select(".journey-ink"), { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: .15 }, .5)
-        .fromTo(select(".journey-milestone"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, stagger: .025, duration: .075 }, .65)
-        .to(select(".journey-paper-primary"), { y: -10, rotation: -8, duration: .18 }, .8)
-        .to(select(".journey-paper-secondary"), { y: 8, rotation: 6, duration: .18 }, .8)
-        .fromTo(select(".journey-settle"), { opacity: 0 }, { opacity: 1, duration: .2 }, .8);
-    }, section);
-    media.add("(max-width: 1024px) and (prefers-reduced-motion: no-preference)", () => {
+    media.add({ mobile: "(max-width: 767px)", desktop: "(min-width: 768px)", motion: "(prefers-reduced-motion: no-preference)" }, (context) => {
+      if (!context.conditions?.motion) return;
       const select = gsap.utils.selector(section.current);
-      const paperOpacity = window.innerWidth < 768 ? .28 : .45;
-      gsap.timeline({ defaults: { duration: .55, ease: "power2.out" }, scrollTrigger: { trigger: section.current, start: "top 82%", once: true } })
-        .fromTo(select(".journey-topline > p"), { opacity: 0, y: 15 }, { opacity: 1, y: 0 }, 0)
-        .fromTo(select(".journey-paper-primary"), { opacity: 0, x: -20, y: 25, rotation: -18 }, { opacity: paperOpacity, x: 0, y: 0, rotation: -10 }, .12)
-        .fromTo(select(".journey-title"), { opacity: 0, y: 22, filter: "blur(2px)" }, { opacity: 1, y: 0, filter: "blur(0px)" }, .28)
-        .fromTo(select(".journey-intro"), { opacity: 0, y: 15 }, { opacity: 1, y: 0 }, .42)
-        .fromTo(select(".journey-paper-secondary"), { opacity: 0, x: 18, y: 20, rotation: 16 }, { opacity: paperOpacity, x: 0, y: 0, rotation: 10 }, .55);
-      // The lower group enters on its own so a short phone never misses it.
-      gsap.timeline({ defaults: { duration: .5, ease: "power2.out" }, scrollTrigger: { trigger: select(".journey-timeline")[0], start: "top 90%", once: true } })
+      const mobile = context.conditions.mobile;
+      // Original main-branch paper rotations, ink drawing, chapter stagger and
+      // settling drift, retimed title-first for the Kage page entry. No blur.
+      gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: { trigger: section.current?.parentElement, start: "top 85%", end: "top 5%", scrub: .4 } })
+        .fromTo(select(".journey-topline, .journey-title"), { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .24 }, 0)
+        .fromTo(select(".journey-intro"), { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: .2 }, .14)
+        .fromTo(select(".journey-paper-primary"), { opacity: 0, x: mobile ? -28 : -110, y: 25, rotation: -20 }, { opacity: mobile ? .24 : .65, x: 0, y: 0, rotation: -12, duration: .28 }, .28)
+        .fromTo(select(".journey-paper-secondary"), { opacity: 0, x: mobile ? 28 : 110, y: 20, rotation: 20 }, { opacity: mobile ? .20 : .50, x: 0, y: 0, rotation: 10, duration: .28 }, .40)
+        .to(select(".journey-paper-primary"), { y: -10, rotation: -8, duration: .25 }, .7)
+        .to(select(".journey-paper-secondary"), { y: 8, rotation: 6, duration: .25 }, .7);
+      gsap.timeline({ defaults: { duration: .7, ease: "none" }, scrollTrigger: { trigger: select(".journey-timeline")[0], start: "top 90%", end: "top 65%", scrub: .4 } })
         .fromTo(select(".journey-timeline-line"), { scaleX: 0, transformOrigin: "left" }, { scaleX: 1 }, 0)
-        .fromTo(select(".journey-ink"), { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0 }, 0)
-        .fromTo(select(".journey-milestone"), { opacity: 0, y: 16 }, { opacity: 1, y: 0, stagger: .09 }, .12)
-        .fromTo(select(".journey-settle"), { opacity: 0, y: 8 }, { opacity: 1, y: 0 }, .65);
+        .fromTo(select(".journey-milestone"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, stagger: .08 }, .10)
+        .fromTo(select(".journey-ink"), { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0 }, .2);
+      gsap.to(select(".journey-paper-primary svg, .journey-paper-secondary svg"), {
+        y: (index: number) => index ? 3 : -3, duration: 3.8, stagger: .6,
+        repeat: -1, yoyo: true, ease: "sine.inOut",
+        scrollTrigger: { trigger: section.current, start: "top bottom", end: "bottom top", toggleActions: "play pause resume pause" },
+      });
     }, section);
-    // Re-measure the pin and all downstream card triggers after fonts settle.
-    document.fonts.ready.then(() => { if (!disposed) ScrollTrigger.refresh(); });
-    return () => { disposed = true; media.revert(); };
+    return () => media.revert();
   }, []);
-
   return <section ref={section} id="journey" className="reading-journey" aria-labelledby="journey-title">
     <div className="journey-frame editorial-shell">
       <div className="journey-topline section-heading">

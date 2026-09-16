@@ -45,11 +45,11 @@ export default function MagneticCursor() {
 
       if (cursorType === "link") {
         setIsHovering(true);
-        setCursorLabel(target.textContent?.slice(0, 20) || "");
+        setCursorLabel("");
       } else if (cursorType === "project") {
         setIsHovering(true);
-        setCursorLabel("View →");
-      } else if (cursorType) {
+        setCursorLabel("↗");
+      } else if (cursorType || target.closest("a, button, [role=button]")) {
         setIsHovering(true);
         setCursorLabel("");
       }
@@ -64,7 +64,7 @@ export default function MagneticCursor() {
     document.addEventListener("mouseenter", handleEnter);
     document.addEventListener("mouseleave", handleLeave);
 
-    const interactiveElements = document.querySelectorAll("[data-cursor]");
+    const interactiveElements = document.querySelectorAll("[data-cursor], a, button, [role=button]");
     interactiveElements.forEach((el) => {
       el.addEventListener("mouseenter", handleElementEnter);
       el.addEventListener("mouseleave", handleElementLeave);
@@ -72,7 +72,7 @@ export default function MagneticCursor() {
 
     // MutationObserver to handle dynamically added elements
     const observer = new MutationObserver(() => {
-      const newElements = document.querySelectorAll("[data-cursor]");
+      const newElements = document.querySelectorAll("[data-cursor], a, button, [role=button]");
       newElements.forEach((el) => {
         el.removeEventListener("mouseenter", handleElementEnter);
         el.removeEventListener("mouseleave", handleElementLeave);
@@ -87,7 +87,7 @@ export default function MagneticCursor() {
       window.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseenter", handleEnter);
       document.removeEventListener("mouseleave", handleLeave);
-      document.querySelectorAll("[data-cursor]").forEach((el) => {
+      document.querySelectorAll("[data-cursor], a, button, [role=button]").forEach((el) => {
         el.removeEventListener("mouseenter", handleElementEnter);
         el.removeEventListener("mouseleave", handleElementLeave);
       });
@@ -108,10 +108,10 @@ export default function MagneticCursor() {
         }`}
       >
         <div
-          className={`rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
+          className={`rounded-full border flex items-center justify-center transition-all duration-300 ${
             isHovering
-              ? "w-20 h-20 border-accent bg-accent/10"
-              : "w-10 h-10 border-foreground/30"
+              ? "w-9 h-9 border-accent bg-accent/10"
+              : "w-6 h-6 border-foreground/50"
           }`}
         >
           {cursorLabel && (

@@ -20,6 +20,8 @@ export default function Projects() {
     const x = ((event.clientY - rect.top) / rect.height - 0.5) * 4;
     const y = -((event.clientX - rect.left) / rect.width - 0.5) * 4;
     card.style.transform = `perspective(1200px) rotateX(${x}deg) rotateY(${y}deg)`;
+    card.style.setProperty("--spot-x", `${(event.clientX - rect.left) / rect.width * 100}%`);
+    card.style.setProperty("--spot-y", `${(event.clientY - rect.top) / rect.height * 100}%`);
   };
 
   return (

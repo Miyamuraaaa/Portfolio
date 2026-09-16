@@ -9,6 +9,7 @@ import { getProjectBySlug, getRelatedProjects } from "@/data/projects";
 import SmoothScroll from "@/components/layout/SmoothScroll";
 import Navbar from "@/components/layout/Navbar";
 import MagneticCursor from "@/components/layout/MagneticCursor";
+
 import Footer from "@/components/layout/Footer";
 
 
@@ -103,6 +104,7 @@ export default function ProjectDetail({
 
   return (
     <>
+
       <MagneticCursor />
       <SmoothScroll>
         <Navbar />

@@ -6,12 +6,12 @@ import { ArrowDown, ArrowUpRight } from "lucide-react";
 import SplitText from "@/components/ui/SplitText";
 import MagneticButton from "@/components/ui/MagneticButton";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-
-const Scene = dynamic(() => import("@/components/three/Scene"), { ssr: false });
-
+// Focused Community component: no landing-page iframe or copied renderer.
+const TempleNightScene = dynamic(
+  () => import("@designcodeio/threeui/components/TempleNightScene").then(module => module.TempleNightScene),
+  { ssr: false },
+);
 class SceneBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
   state = { failed: false };
   static getDerivedStateFromError() { return { failed: true }; }
@@ -20,57 +20,29 @@ class SceneBoundary extends Component<{ children: ReactNode }, { failed: boolean
 
 export default function Hero({ ready = true }: { ready?: boolean }) {
   const heroRef = useRef<HTMLElement>(null);
-  const handoff = useRef({ progress: 0 });
   const [showScene, setShowScene] = useState(false);
-  const [visible, setVisible] = useState(true);
-
+  useEffect(() => {
+    // Phones use the CSS lantern atmosphere; do not mount a hidden heavy renderer.
+    const media = window.matchMedia("(min-width: 768px)");
+    const update = () => setShowScene(media.matches);
+    const frame = requestAnimationFrame(update);
+    media.addEventListener("change", update);
+    return () => { cancelAnimationFrame(frame); media.removeEventListener("change", update); };
+  }, []);
   useEffect(() => {
     if (!ready) return;
     const media = gsap.matchMedia();
     media.add("(max-width: 1024px) and (prefers-reduced-motion: no-preference)", () => {
-      gsap.fromTo(".hero-byline, .hero-tagline, .hero-description, .hero-actions, .scroll-cue", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .55, stagger: .12, delay: .9, ease: "power2.out" });
+      gsap.fromTo(".hero-byline, .hero-tagline, .hero-description, .hero-actions, .scroll-cue", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .65, stagger: .10, delay: .9, ease: "power2.out" });
     }, heroRef);
     return () => media.revert();
   }, [ready]);
-
-  useEffect(() => {
-    if (!showScene) return;
-    const media = gsap.matchMedia();
-    media.add("(prefers-reduced-motion: no-preference)", () => {
-      gsap.timeline({ scrollTrigger: { trigger: heroRef.current, start: "top top", end: "bottom top", scrub: 0.35, invalidateOnRefresh: true } })
-        .to(handoff.current, { progress: 1, duration: 1, ease: "none" }, 0)
-        .to(".hero-canvas", { y: 90, opacity: 0.35, duration: 0.45, ease: "none" }, 0.55);
-    }, heroRef);
-    return () => media.revert();
-  }, [showScene]);
-
-  useEffect(() => {
-    // Keep the original mobile fallback strategy without mounting a hidden Canvas.
-    const media = window.matchMedia("(min-width: 768px) and (prefers-reduced-motion: no-preference)");
-    const update = () => setShowScene(media.matches);
-    update();
-    media.addEventListener("change", update);
-    let inView = true;
-    const updateVisibility = () => {
-      const active = inView && !document.hidden;
-      setVisible(active);
-      if (heroRef.current) heroRef.current.dataset.active = String(active);
-    };
-    const observer = new IntersectionObserver(([entry]) => { inView = entry.isIntersecting; updateVisibility(); });
-    if (heroRef.current) observer.observe(heroRef.current);
-    document.addEventListener("visibilitychange", updateVisibility);
-    return () => { media.removeEventListener("change", update); document.removeEventListener("visibilitychange", updateVisibility); observer.disconnect(); };
-  }, []);
-
   return (
     <section ref={heroRef} id="home" className="editorial-hero">
-      <div className="hero-art" aria-hidden="true">
-        <div className="paper-study"><i /><i /><i /><b /></div>
-      </div>
-      {showScene && <div className="hero-canvas" aria-hidden="true">
-        <SceneBoundary><Scene eventSource={heroRef} active={visible} handoff={handoff} /></SceneBoundary>
-      </div>}
+      <div className="kage-hero-atmosphere" aria-hidden="true" />
+      {showScene && <div className="kage-temple" aria-hidden="true"><SceneBoundary><TempleNightScene /></SceneBoundary></div>}
       <div className="hero-shade" aria-hidden="true" />
+      <div className="cover-vignette" aria-hidden="true" />
       <div className="editorial-shell hero-content">
         <div className="hero-topline"><span className="eyebrow"><span className="label-dot" /> GED0001</span><span className="eyebrow hero-edition">A READING COLLECTION / 2026</span></div>
         <h1 className="hero-title" aria-label="Digital Reading Portfolio">

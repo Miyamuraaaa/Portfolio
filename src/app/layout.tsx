@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { spaceGrotesk, jetbrainsMono } from "@/lib/fonts";
+import "@designcodeio/threeui/style.css";
 import "./globals.css";
-import CosmicAtmosphere from "@/components/ui/CosmicAtmosphere";
+import "./kage.css";
 
 export const metadata: Metadata = {
   title: "GED0001 | DIGITAL READING PORTFOLIO | By Cliford V. Balce",
@@ -20,7 +21,6 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} antialiased`}
     >
       <body className="min-h-screen bg-background text-foreground">
-        <CosmicAtmosphere />
         <div className="site-foreground">{children}</div>
       </body>
     </html>

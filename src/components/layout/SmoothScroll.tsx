@@ -49,9 +49,11 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
           landing?.classList.add("section-landing");
           timer = setTimeout(clearLanding, 800);
         };
-        if (lenis) lenis.scrollTo(target, { offset: -100, onComplete: complete });
+        // Use stable document destinations while the cover is pinned or the page tilted.
+        const destination = id === "home" ? 0 : id === "journey" ? target.closest<HTMLElement>(".journey-entry") || target : target;
+        if (lenis) lenis.scrollTo(destination, { offset: id === "home" ? 0 : -100, onComplete: complete });
         else {
-          window.scrollTo({ top: Math.max(0, target.getBoundingClientRect().top + window.scrollY - 100), behavior: reduced ? "instant" : "smooth" });
+          window.scrollTo({ top: typeof destination === "number" ? destination : Math.max(0, destination.getBoundingClientRect().top + window.scrollY - 100), behavior: reduced ? "instant" : "smooth" });
           complete();
         }
       };

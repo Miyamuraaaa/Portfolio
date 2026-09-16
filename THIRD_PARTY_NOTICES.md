@@ -6,21 +6,15 @@ The existing Space Grotesk and JetBrains Mono families are now served with `next
 - Space Grotesk: https://github.com/google/fonts/tree/main/ofl/spacegrotesk — SIL Open Font License 1.1; full notice in `public/fonts/SpaceGrotesk-OFL.txt`.
 - JetBrains Mono: https://github.com/google/fonts/tree/main/ofl/jetbrainsmono — SIL Open Font License 1.1; full notice in `public/fonts/JetBrainsMono-OFL.txt`.
 
-## Three.js Galaxy Generator
-- Author: Alvaro Saburido
-- Repository: https://github.com/alvarosabu/threejs-galaxy-generator
-- License: MIT, Copyright (c) 2022 Alvaro Saburido
-- Files studied: `src/App.vue`, `src/composables/useScene.js`, `src/shaders/galaxy/vertex.glsl`, `src/shaders/galaxy/fragment.glsl`, and `LICENSE`.
-- Ideas studied: precomputed particle positions, varied size/color, depth attenuation, slow rotation, soft point edges, and resource cleanup.
+## ThreeUI Community — TempleNightScene
 
-## Galaxy (galaxy-shader reference)
-- Author: Sandra Boez
-- Repository: https://github.com/sboez/Galaxy
-- License: MIT, Copyright (c) 2021 Sandra Boez
-- Files studied: `src/scripts/Galaxy.js`, `src/shaders/vertex.glsl`, `src/shaders/fragment.glsl`, and `LICENSE`.
-- Ideas studied: particle buffers, color interpolation, time-based motion, and radial point falloff. This reference renders a particle galaxy, not volumetric cloud haze.
-
-Both galaxy repositories were read-only references. The portfolio's edge-weighted DOM star distribution, three slow CSS drift layers, randomized shooting-star scheduling, and low-opacity radial-gradient haze were written independently. No substantial source code, shaders, textures, assets, or configuration were copied. No galaxy model, spiral composition, or additional renderer was introduced.
+- Package: `@designcodeio/threeui`, version 1.2.0.
+- License: MIT, Copyright (c) 2026 Meng To.
+- Full license: [threeui-MIT.txt](licenses/design-references/threeui-MIT.txt).
+- The Hero imports the installed `TempleNightScene` component directly; shared package styles are imported once. No renderer source or runtime assets are copied into this repository. The scene creates its environment procedurally.
+- A scoped build loader translates legacy color-space, mapped UV, and shadow APIs for Three.js r183 and reduces film grain behind portfolio text. The installed package files remain unchanged.
+- The same loader connects a portfolio scroll-progress value to a small, reversible camera offset in the existing renderer for cover-to-page depth; no additional renderer or copied scene is used.
+- Embedded fonts supplied by the shared package stylesheet retain their upstream font licenses: [threeui-FONT-LICENSES.md](licenses/design-references/threeui-FONT-LICENSES.md). The portfolio continues to use its existing locally hosted fonts.
 
 ## MacBook Showcase Landing Page
 - Original author: Arnob Mahmud

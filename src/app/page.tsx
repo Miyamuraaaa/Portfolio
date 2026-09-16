@@ -5,9 +5,9 @@ import SmoothScroll from "@/components/layout/SmoothScroll";
 import Navbar from "@/components/layout/Navbar";
 import Preloader from "@/components/layout/Preloader";
 import MagneticCursor from "@/components/layout/MagneticCursor";
+
 import PageTransition from "@/components/layout/PageTransition";
-import Hero from "@/components/sections/Hero";
-import ReadingJourney from "@/components/sections/ReadingJourney";
+import CoverJourney from "@/components/sections/CoverJourney";
 import Projects from "@/components/sections/Projects";
 import AcademicIndex from "@/components/sections/AcademicIndex";
 import Footer from "@/components/layout/Footer";
@@ -26,14 +26,14 @@ export default function Home() {
 
   return (
     <div className="noise-overlay">
-      {loading && <Preloader onComplete={handlePreloaderComplete} />}
       <MagneticCursor />
+      {loading && <Preloader onComplete={handlePreloaderComplete} />}
+
       <SmoothScroll>
         <Navbar />
         <PageTransition>
           <main>
-            <Hero ready={!loading} />
-            <ReadingJourney />
+            <CoverJourney ready={!loading} />
             <ScrollReveals>
               <SectionDivider />
               <AcademicIndex />
