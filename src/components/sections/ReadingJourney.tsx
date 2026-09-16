@@ -15,6 +15,10 @@ const milestones = [
 
 function JourneyPaper({ secondary = false }: { secondary?: boolean }) {
   return <div className={`journey-paper ${secondary ? "journey-paper-secondary" : "journey-paper-primary"}`} aria-hidden="true">
+    <span className="journey-backing-board" />
+    <span className="journey-sheet-underlay" />
+    <span className="journey-sheet-surface" />
+    {!secondary && <span className="journey-side-pen" />}
     <span className="journey-paper-code">{secondary ? "NOTES / 02" : "GED0001 / 01"}</span>
     <svg viewBox="0 0 240 310" fill="none">
       <path d="M30 30h75M30 45h150" stroke="currentColor" strokeWidth="1.5" />
@@ -30,18 +34,19 @@ export default function ReadingJourney() {
   const section = useRef<HTMLElement>(null);
   useEffect(() => {
     const media = gsap.matchMedia();
-    media.add({ mobile: "(max-width: 767px)", desktop: "(min-width: 768px)", motion: "(prefers-reduced-motion: no-preference)" }, (context) => {
+    media.add({ mobile: "(max-width: 767px)", desktop: "(min-width: 768px)", wide: "(min-width: 1025px)", motion: "(prefers-reduced-motion: no-preference)" }, (context) => {
       if (!context.conditions?.motion) return;
       const select = gsap.utils.selector(section.current);
       const mobile = context.conditions.mobile;
+      const wide = context.conditions.wide;
       // Original main-branch paper rotations, ink drawing, chapter stagger and
       // settling drift, retimed title-first for the Kage page entry. No blur.
       gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: { trigger: section.current?.parentElement, start: "top 85%", end: "top 5%", scrub: .4 } })
         .fromTo(select(".journey-topline, .journey-title"), { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .24 }, 0)
         .fromTo(select(".journey-intro"), { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: .2 }, .14)
-        .fromTo(select(".journey-paper-primary"), { opacity: 0, x: mobile ? -28 : -110, y: 25, rotation: -20 }, { opacity: mobile ? .24 : .65, x: 0, y: 0, rotation: -12, duration: .28 }, .28)
-        .fromTo(select(".journey-paper-secondary"), { opacity: 0, x: mobile ? 28 : 110, y: 20, rotation: 20 }, { opacity: mobile ? .20 : .50, x: 0, y: 0, rotation: 10, duration: .28 }, .40)
-        .to(select(".journey-paper-primary"), { y: -10, rotation: -8, duration: .25 }, .7)
+        .fromTo(select(".journey-paper-primary"), { opacity: 0, x: mobile ? -28 : -110, y: 25, rotation: wide ? -14 : -20 }, { opacity: mobile ? .24 : .65, x: 0, y: 0, rotation: wide ? -8 : -12, duration: .28 }, .28)
+        .fromTo(select(".journey-paper-secondary"), { opacity: 0, x: mobile ? 28 : 110, y: 20, rotation: wide ? 14 : 20 }, { opacity: mobile ? .20 : .50, x: 0, y: 0, rotation: wide ? 8 : 10, duration: .28 }, .40)
+        .to(select(".journey-paper-primary"), { y: -10, rotation: wide ? -6 : -8, duration: .25 }, .7)
         .to(select(".journey-paper-secondary"), { y: 8, rotation: 6, duration: .25 }, .7);
       gsap.timeline({ defaults: { duration: .7, ease: "none" }, scrollTrigger: { trigger: select(".journey-timeline")[0], start: "top 90%", end: "top 65%", scrub: .4 } })
         .fromTo(select(".journey-timeline-line"), { scaleX: 0, transformOrigin: "left" }, { scaleX: 1 }, 0)
