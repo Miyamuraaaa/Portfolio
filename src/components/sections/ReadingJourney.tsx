@@ -44,19 +44,36 @@ export default function ReadingJourney() {
       gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: { trigger: section.current?.parentElement, start: "top 85%", end: "top 5%", scrub: .4 } })
         .fromTo(select(".journey-topline, .journey-title"), { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .24 }, 0)
         .fromTo(select(".journey-intro"), { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: .2 }, .14)
-        .fromTo(select(".journey-paper-primary"), { opacity: 0, x: mobile ? -28 : -110, y: 25, rotation: wide ? -14 : -20 }, { opacity: mobile ? .24 : .65, x: 0, y: 0, rotation: wide ? -8 : -12, duration: .28 }, .28)
-        .fromTo(select(".journey-paper-secondary"), { opacity: 0, x: mobile ? 28 : 110, y: 20, rotation: wide ? 14 : 20 }, { opacity: mobile ? .20 : .50, x: 0, y: 0, rotation: wide ? 8 : 10, duration: .28 }, .40)
+        .fromTo(select(".journey-paper-primary"), { opacity: 0, x: mobile ? -28 : -110, y: 25, rotation: wide ? -14 : -20 }, { opacity: mobile ? .55 : .65, x: 0, y: 0, rotation: wide ? -8 : -12, duration: .28 }, .28)
+        .fromTo(select(".journey-paper-secondary"), { opacity: 0, x: mobile ? 28 : 110, y: 20, rotation: wide ? 14 : 20 }, { opacity: mobile ? .45 : .50, x: 0, y: 0, rotation: wide ? 8 : 10, duration: .28 }, .40)
         .to(select(".journey-paper-primary"), { y: -10, rotation: wide ? -6 : -8, duration: .25 }, .7)
         .to(select(".journey-paper-secondary"), { y: 8, rotation: 6, duration: .25 }, .7);
       gsap.timeline({ defaults: { duration: .7, ease: "none" }, scrollTrigger: { trigger: select(".journey-timeline")[0], start: "top 90%", end: "top 65%", scrub: .4 } })
         .fromTo(select(".journey-timeline-line"), { scaleX: 0, transformOrigin: "left" }, { scaleX: 1 }, 0)
         .fromTo(select(".journey-milestone"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, stagger: .08 }, .10)
         .fromTo(select(".journey-ink"), { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0 }, .2);
+      // Progress line + milestone dots: the line fills with scroll and each dot
+      // lights as the line reaches it (and un-lights when scrolling back up).
+      let cleanup: (() => void) | undefined;
+      const timeline = select(".journey-timeline")[0] as HTMLElement | undefined;
+      if (timeline) {
+        const items = select(".journey-milestone") as HTMLElement[];
+        const setProgress = (value: number) => {
+          timeline.style.setProperty("--journey-progress", value.toFixed(4));
+          items.forEach((item, index) => item.classList.toggle("is-reached", value >= index / items.length + .01));
+        };
+        timeline.setAttribute("data-journey-scrub", "true");
+        setProgress(0);
+        ScrollTrigger.create({ trigger: timeline, start: "top 85%", end: "top 32%", onUpdate: self => setProgress(self.progress), onRefresh: self => setProgress(self.progress) });
+        // matchMedia reverts this on resize/unmount; leave the finished state behind.
+        cleanup = () => { timeline.removeAttribute("data-journey-scrub"); timeline.style.removeProperty("--journey-progress"); items.forEach(item => item.classList.remove("is-reached")); };
+      }
       gsap.to(select(".journey-paper-primary svg, .journey-paper-secondary svg"), {
         y: (index: number) => index ? 3 : -3, duration: 3.8, stagger: .6,
         repeat: -1, yoyo: true, ease: "sine.inOut",
         scrollTrigger: { trigger: section.current, start: "top bottom", end: "bottom top", toggleActions: "play pause resume pause" },
       });
+      return cleanup;
     }, section);
     return () => media.revert();
   }, []);
@@ -76,7 +93,9 @@ export default function ReadingJourney() {
       </div>
       <div className="journey-timeline">
         <span className="journey-timeline-line" aria-hidden="true" />
+        <span className="journey-timeline-fill" aria-hidden="true" />
         <ol>{milestones.map((milestone, index) => <li key={milestone.title} className="journey-milestone">
+          <span className="journey-dot" aria-hidden="true" />
           <a href={milestone.href} data-cursor="link"><span className="eyebrow">0{index + 1}</span><strong>{milestone.title}</strong><span>{milestone.detail}</span></a>
         </li>)}</ol>
       </div>

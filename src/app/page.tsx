@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import SmoothScroll from "@/components/layout/SmoothScroll";
 import Navbar from "@/components/layout/Navbar";
+import ScrollProgress from "@/components/layout/ScrollProgress";
 import Preloader from "@/components/layout/Preloader";
 import MagneticCursor from "@/components/layout/MagneticCursor";
 
@@ -31,6 +32,7 @@ export default function Home() {
       {loading && <Preloader onComplete={handlePreloaderComplete} />}
 
       <SmoothScroll>
+        <ScrollProgress />
         <Navbar />
         <PageTransition>
           <main>

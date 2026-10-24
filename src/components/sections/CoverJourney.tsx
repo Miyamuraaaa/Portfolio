@@ -15,7 +15,7 @@ export default function CoverJourney({ ready }: { ready: boolean }) {
     const element = root.current;
     const media = gsap.matchMedia();
     let disposed = false;
-    media.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
+    media.add("(min-width: 768px) and (min-height: 540px) and (prefers-reduced-motion: no-preference)", () => {
       const hero = element.querySelector<HTMLElement>("#home")!;
       const page = element.querySelector<HTMLElement>("#journey")!;
       const entry = element.querySelector<HTMLElement>(".journey-entry")!;

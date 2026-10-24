@@ -184,3 +184,77 @@ body { background: #0c0d0e; }
   .reflection-link:hover { translate: none; }
   .featured-link:hover .calculator-type { transform: none; }
 }
+
+/* ------------------------------------------------------------------
+   Hero fits the visible window at any height (laptops, small windows).
+   The hero used to be at least 850px tall, so on a ~640px-tall window the
+   description, buttons and footer line sat below the screen and the pinned
+   hero could not be scrolled into view. Type and spacing now scale with the
+   window height (svh) as well as its width; the look is unchanged on tall
+   screens because every value is clamped to its original size.
+------------------------------------------------------------------- */
+@media (min-width: 768px) {
+  .editorial-hero { min-height: 100svh; padding-top: clamp(76px, 14svh, 165px); }
+  .hero-topline { margin-bottom: clamp(10px, 2.6svh, 30px); }
+  .hero-title { font-size: clamp(44px, min(8.2vw, 13.2svh), 128px); }
+  .hero-byline { margin-top: clamp(10px, 2.4svh, 27px); }
+  .hero-intro { margin-top: clamp(10px, 2.4svh, 26px); }
+  .hero-tagline { font-size: clamp(19px, 3.2svh, 25px); }
+  .hero-description { margin-top: clamp(6px, 1.2svh, 12px); line-height: clamp(1.55, .25svh + 1.1, 1.85); }
+  .hero-actions { margin-top: clamp(12px, 2.4svh, 27px); padding-bottom: clamp(64px, 10.5svh, 112px); }
+  .hero-foot { bottom: clamp(12px, 3svh, 27px); }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-title { font-size: clamp(44px, min(9.6vw, 13.2svh), 95px); }
+}
+/* Very short windows (for example a phone held sideways): let the hero
+   scroll naturally instead of squeezing the type any further. */
+@media (min-width: 768px) and (max-height: 539px) {
+  .editorial-hero { min-height: 0; padding-bottom: 96px; }
+  .hero-actions { padding-bottom: 24px; }
+  .hero-foot { position: relative; bottom: auto; margin-top: 24px; }
+}
+
+/* ------------------------------------------------------------------
+   Scroll progress bar (top of the window).
+------------------------------------------------------------------- */
+.scroll-progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 60; pointer-events: none; background: #ffffff0d; }
+.scroll-progress-bar { height: 100%; width: 100%; transform: scaleX(0); transform-origin: 0 50%; background: linear-gradient(90deg, #807052, #d3c09a); box-shadow: 0 0 10px #d3c09a66; will-change: transform; }
+
+/* ------------------------------------------------------------------
+   Reading Journey: progress line with milestone dots that light up as the
+   visitor scrolls (Reading, Response, iCARE, Reflection).
+------------------------------------------------------------------- */
+.journey-timeline { --journey-progress: 1; }
+.journey-milestone { position: relative; }
+.journey-timeline-fill { position: absolute; top: 0; left: 0; width: 100%; height: 1px; z-index: 1; background: linear-gradient(90deg, #807052, #d3c09a); box-shadow: 0 0 8px #d3c09a55; transform: scaleX(var(--journey-progress)); transform-origin: 0 50%; will-change: transform; }
+.journey-dot { position: absolute; top: -4px; left: 0; z-index: 2; width: 9px; height: 9px; border-radius: 50%; background: #0c0d0e; border: 1px solid #b9a58099; transition: background-color .45s, border-color .45s, box-shadow .45s, transform .45s; }
+.journey-milestone.is-reached .journey-dot,
+.journey-timeline:not([data-journey-scrub]) .journey-dot { background: #d3c09a; border-color: #d3c09a; box-shadow: 0 0 0 4px #d3c09a22, 0 0 14px #d3c09a80; transform: scale(1.12); }
+.journey-milestone strong { transition: color .45s; }
+.journey-milestone.is-reached strong { color: #f0ece3; }
+@media (prefers-reduced-motion: reduce) {
+  .journey-dot, .journey-milestone strong { transition: none; }
+}
+
+/* ------------------------------------------------------------------
+   Phones show the same Reading Journey as desktop: boards and pen stay,
+   the four milestones stay in one row on the line.
+------------------------------------------------------------------- */
+@media (max-width: 767px) {
+  .journey-backing-board { display: block; inset: -9px -7px -10px -10px; }
+  .journey-paper-secondary .journey-backing-board { inset: -8px -9px -11px -6px; }
+  .journey-sheet-underlay { display: block; }
+  .journey-side-pen { display: block; left: -9px; width: 5px; height: 64%; }
+  .journey-side-pen::after { height: 9px; }
+  .journey-timeline ol { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+  .journey-milestone strong { font-size: clamp(14px, 4.2vw, 18px); }
+  .journey-milestone a > span:last-child { font-size: 10px; line-height: 1.35; }
+  .journey-milestone a { padding-top: 16px; }
+  /* Corners hold the paper study, the centre keeps the title readable. */
+  .journey-stage { min-height: 470px; }
+  .journey-copy { position: relative; z-index: 3; }
+  .journey-paper { width: 100px; }
+  .journey-paper-primary { left: 10px; top: 4px; }
+  .journey-paper-secondary { right: 10px; bottom: 4px; }
+}
