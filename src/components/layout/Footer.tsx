@@ -28,7 +28,10 @@ export default function Footer() {
         <p className="mt-3 text-sm text-foreground/65">By Cliford V. Balce</p>
         <SocialLinks className="mt-4" /></div>
       <p className="footer-note">Beyond the Pages</p>
-      <Link href="/#home" data-cursor="link" className="flex items-center gap-3 text-sm">Back to top <ArrowUpRight size={17} /></Link>
+      <div className="flex flex-col items-start gap-1 sm:items-end">
+        <Link href="/#home" data-cursor="link" className="flex items-center gap-3 text-sm">Back to top <ArrowUpRight size={17} /></Link>
+        <button type="button" data-cursor="link" className="device-switch eyebrow" onClick={() => window.dispatchEvent(new Event("portfolio:change-device"))}>Change device view</button>
+      </div>
     </footer>
   );
 }

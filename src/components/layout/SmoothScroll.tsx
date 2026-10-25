@@ -7,12 +7,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function SmoothScroll({ children }: { children: React.ReactNode }) {
+export default function SmoothScroll({ children, mobile = false }: { children: React.ReactNode; mobile?: boolean }) {
   useEffect(() => {
     const media = gsap.matchMedia();
     media.add({ motion: "(prefers-reduced-motion: no-preference)", reduced: "(prefers-reduced-motion: reduce)", touch: "(max-width: 1024px) and (pointer: coarse)" }, (context) => {
       const reduced = Boolean(context.conditions?.reduced);
-      const lenis = reduced || context.conditions?.touch ? null : new Lenis({
+      const lenis = reduced || mobile || context.conditions?.touch ? null : new Lenis({
         anchors: false,
         duration: 1.2,
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -83,6 +83,6 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       };
     });
     return () => media.revert();
-  }, []);
+  }, [mobile]);
   return <>{children}</>;
 }

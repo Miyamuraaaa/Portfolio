@@ -3,6 +3,7 @@ import { spaceGrotesk, jetbrainsMono } from "@/lib/fonts";
 import "@designcodeio/threeui/style.css";
 import "./globals.css";
 import "./kage.css";
+import "./mobile.css";
 
 export const metadata: Metadata = {
   title: "GED0001 | DIGITAL READING PORTFOLIO | By Cliford V. Balce",

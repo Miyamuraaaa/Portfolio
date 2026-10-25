@@ -4,14 +4,16 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Hero from "./Hero";
+import MobileHero from "./MobileHero";
 import ReadingJourney from "./ReadingJourney";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function CoverJourney({ ready }: { ready: boolean }) {
+export default function CoverJourney({ ready, mobile = false }: { ready: boolean; mobile?: boolean }) {
   const root = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (!ready || !root.current) return;
+    // The phone home page is not pinned, so it needs none of the cover choreography.
+    if (!ready || mobile || !root.current) return;
     const element = root.current;
     const media = gsap.matchMedia();
     let disposed = false;
@@ -45,9 +47,9 @@ export default function CoverJourney({ ready }: { ready: boolean }) {
     }, root);
     document.fonts.ready.then(() => { if (!disposed) ScrollTrigger.refresh(); });
     return () => { disposed = true; media.revert(); };
-  }, [ready]);
+  }, [ready, mobile]);
   return <div ref={root} className="cover-journey">
-    <Hero ready={ready} />
+    {mobile ? <MobileHero ready={ready} /> : <Hero ready={ready} />}
     <div className="journey-entry"><ReadingJourney /></div>
   </div>;
 }

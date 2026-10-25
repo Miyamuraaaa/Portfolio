@@ -21,7 +21,6 @@ class SceneBoundary extends Component<{ children: ReactNode }, { failed: boolean
 export default function Hero({ ready = true }: { ready?: boolean }) {
   const heroRef = useRef<HTMLElement>(null);
   const [showScene, setShowScene] = useState(false);
-  const [awake, setAwake] = useState(true);
   useEffect(() => {
     // Phones use the CSS lantern atmosphere; do not mount a hidden heavy renderer.
     const media = window.matchMedia("(min-width: 768px)");
@@ -29,25 +28,6 @@ export default function Hero({ ready = true }: { ready?: boolean }) {
     const frame = requestAnimationFrame(update);
     media.addEventListener("change", update);
     return () => { cancelAnimationFrame(frame); media.removeEventListener("change", update); };
-  }, []);
-  useEffect(() => {
-    // Stop drawing the WebGL scene once the hero is far behind the visitor.
-    // Hysteresis: it sleeps past 1.6x the hero height and wakes at 1.25x on the
-    // way back up, so it is running again before the hero is visible.
-    let frame = 0;
-    let asleep = false;
-    const check = () => {
-      frame = 0;
-      const height = heroRef.current?.offsetHeight ?? window.innerHeight;
-      const y = window.scrollY;
-      if (!asleep && y > height * 1.6) { asleep = true; setAwake(false); }
-      else if (asleep && y < height * 1.25) { asleep = false; setAwake(true); }
-    };
-    const queue = () => { if (!frame) frame = requestAnimationFrame(check); };
-    window.addEventListener("scroll", queue, { passive: true });
-    window.addEventListener("resize", queue);
-    check();
-    return () => { if (frame) cancelAnimationFrame(frame); window.removeEventListener("scroll", queue); window.removeEventListener("resize", queue); };
   }, []);
   useEffect(() => {
     if (!ready) return;
@@ -60,7 +40,7 @@ export default function Hero({ ready = true }: { ready?: boolean }) {
   return (
     <section ref={heroRef} id="home" className="editorial-hero">
       <div className="kage-hero-atmosphere" aria-hidden="true" />
-      {showScene && awake && <div className="kage-temple" aria-hidden="true"><SceneBoundary><TempleNightScene /></SceneBoundary></div>}
+      {showScene && <div className="kage-temple" aria-hidden="true"><SceneBoundary><TempleNightScene /></SceneBoundary></div>}
       <div className="hero-shade" aria-hidden="true" />
       <div className="cover-vignette" aria-hidden="true" />
       <div className="editorial-shell hero-content">
