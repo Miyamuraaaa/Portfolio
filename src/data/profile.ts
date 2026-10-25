@@ -23,9 +23,12 @@ export const profile = {
     label: "EngineerX",
     url: "https://engineerx.clif0.workers.dev/",
   },
-  // Written only from facts supplied by the owner. Edit freely.
+  // The owner's own words. Wrap a phrase in **double asterisks** to show it emphasised.
   bio: [
-    "I'm Clif, a BSCE student from block TV05. I like building practical digital tools that help students solve problems.",
-    "One of them is EngineerX, a website of engineering calculators I made on my own. This portfolio is where I keep my GED0001 reading work together: the worksheets, the responses, the iCARE activities and my reflections.",
+    "Hello! I'm Cliford V. Balce, a Bachelor of Science in Civil Engineering (BSCE) student.",
+    "If I had to describe myself in three words, I'd say **persistent, curious, and always willing to learn.** I enjoy exploring new ideas, figuring out how things work, and finding solutions when challenges come my way. I might learn something quickly but forget it just as fast sometimes (my memory has its own plans, TT ). Still, I believe that there's always something new to learn, and I try my best to keep improving.",
+    "This portfolio is one example of that mindset. I designed and coded this website myself, and honestly, it was quite a challenge! It took a lot of time, patience, and trial and error to bring my ideas to life. But through the process, I learned more than just how to build a website\u2014I also learned the value of persistence and figuring things out along the way.",
+    "For me, this portfolio is more than a collection of academic work. It's a reflection of my learning journey, the effort I've put into my work, and the person I'm continuing to become.",
+    "Thank you for visiting my portfolio! I hope you enjoy exploring my work and following my journey **beyond the pages.**",
   ],
 } as const;

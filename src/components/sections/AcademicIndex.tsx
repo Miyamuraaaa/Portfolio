@@ -1,5 +1,8 @@
 import { worksIn, workCount, type ContentCategory } from "@/data/content";
+import { ArrowUpRight } from "lucide-react";
 import CompactAcademicCard from "@/components/ui/CompactAcademicCard";
+import { collectionHref } from "@/data/collections";
+import "@/app/collection.css";
 
 const sections: { id: string; title: string; description: string; category?: ContentCategory }[] = [
   { id: "worksheets", title: "Reading Process Worksheets", description: "A space for the activities that guide a closer reading.", category: "reading-process" },
@@ -24,7 +27,11 @@ export default function AcademicIndex() {
             <div className="chapter-row" data-reveal-group>
               <span className="chapter-divider" data-reveal="line" aria-hidden="true" />
               <span className="eyebrow chapter-number" data-reveal="label">0{index + 2}</span>
-              <div className="chapter-copy"><h3 id={`${section.id}-title`} data-reveal="title">{section.title}</h3><p data-reveal="description">{section.description}</p></div>
+              <div className="chapter-copy">
+                <h3 id={`${section.id}-title`} data-reveal="title"><a className="chapter-link" href={collectionHref(section.id)} target="_blank" rel="noopener noreferrer" data-cursor="project">{section.title} <ArrowUpRight size={20} aria-hidden="true" /><span className="sr-only"> (opens its own page in a new tab)</span></a></h3>
+                <p data-reveal="description">{section.description}</p>
+                <a className="chapter-open eyebrow" href={collectionHref(section.id)} target="_blank" rel="noopener noreferrer" tabIndex={-1} aria-hidden="true">OPEN THIS PAGE <ArrowUpRight size={12} /></a>
+              </div>
               <span className="chapter-status" data-empty={works.length === 0} data-reveal="description">{status}</span>
             </div>
             {works.length > 0 && <div className="academic-work-grid reflection-grid">{works.map((work, index) => <CompactAcademicCard key={work.id} work={work} index={index} />)}</div>}

@@ -18,6 +18,11 @@ const facts = [
   { label: "Course", value: profile.course },
 ];
 
+/** Shows **double-asterisk** phrases from profile.bio as emphasised text. */
+function Rich({ text }: { text: string }) {
+  return <>{text.split("**").map((part, index) => (index % 2 ? <strong key={index}>{part}</strong> : part))}</>;
+}
+
 /**
  * About section: a framed portrait on one board, the details on a second board,
  * and a pen that slides in beside the first — the same desk language as the Reading Journey.
@@ -116,7 +121,7 @@ export default function AboutMe() {
           {/* Centre: the introduction */}
           <div className="about-copy">
             {profile.bio.map((paragraph, index) => (
-              <p key={index} data-about="line" className={index === 0 ? "about-lead" : undefined}>{paragraph}</p>
+              <p key={index} data-about="line" className={index === 0 ? "about-lead" : undefined}><Rich text={paragraph} /></p>
             ))}
             <div className="about-links" data-about="line">
               <SocialLinks />

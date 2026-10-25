@@ -11,6 +11,7 @@ import MagneticCursor from "@/components/layout/MagneticCursor";
 import PageTransition from "@/components/layout/PageTransition";
 import CoverJourney from "@/components/sections/CoverJourney";
 import AboutMe from "@/components/sections/AboutMe";
+import FavoriteWords from "@/components/sections/FavoriteWords";
 import Projects from "@/components/sections/Projects";
 import AcademicIndex from "@/components/sections/AcademicIndex";
 import Footer from "@/components/layout/Footer";
@@ -89,6 +90,8 @@ export default function Home() {
             <ScrollReveals>
               <SectionDivider />
               <AboutMe />
+              <SectionDivider />
+              <FavoriteWords />
               <SectionDivider />
               <AcademicIndex />
               <SectionDivider />

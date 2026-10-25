@@ -1,0 +1,15 @@
+/* Favorite words: ten numbered rows in two columns (one column on phones). */
+.words-section { padding-block: clamp(62px, 9vw, 110px); }
+.words-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(32px, 6vw, 96px); border-bottom: 1px solid #ffffff18; }
+.word-row { position: relative; display: grid; grid-template-columns: 44px minmax(0, 1fr); column-gap: 18px; row-gap: 8px; align-items: baseline; padding: 30px 0 28px; }
+.word-divider { position: absolute; top: 0; inset-inline: 0; height: 1px; background: #ffffff18; }
+.word-number { grid-row: 1 / 3; color: #c2b08f; }
+.word-term { font-size: clamp(30px, 3.6vw, 46px); font-weight: 400; line-height: 1.05; letter-spacing: -.045em; color: #eee9df; transition: color .35s; }
+.word-meaning { grid-column: 2; max-width: 38ch; font-size: 14px; line-height: 1.8; color: #a7a4aa; }
+@media (hover: hover) { .word-row:hover .word-term { color: #d3c09a; } }
+@media (max-width: 767px) {
+  .words-list { grid-template-columns: minmax(0, 1fr); }
+  .word-row { grid-template-columns: 34px minmax(0, 1fr); column-gap: 12px; padding-block: 24px 22px; }
+  .word-term { font-size: clamp(30px, 9vw, 40px); }
+  .word-meaning { font-size: 14px; max-width: none; }
+}
