@@ -76,15 +76,16 @@ export function createPixelScene(canvas,opts){
   }
   function build(){
     const vw=Math.max(1,host.clientWidth),vh=Math.max(1,host.clientHeight);
-    portrait=vw/vh<.95;
+    const stage=!!(opts&&opts.stage);
+    portrait=stage?true:vw/vh<.95;
     P=Math.max(3,Math.round(Math.max(vw,vh)/330));
     W=Math.ceil(vw/P);H=Math.ceil(vh/P);
     canvas.width=W;canvas.height=H;ctx.imageSmoothingEnabled=false;
     R=mulberry(2026);wins=[];lants=[];stars=[];leaves=[];bursts=[];rain=[];cloud=[];
-    s=portrait?Math.min(W*.7,H*.25):H*.62;
+    s=portrait?(stage?Math.min(W*.78,H*.4):Math.min(W*.7,H*.25)):H*.62;
     const cx=portrait?W*.5:W*.63;
-    ground=portrait?H*.37:H*.8;
-    moon=portrait?{x:W*.78,y:H*.14,r:Math.max(13,W*.17)}:{x:W*.72,y:H*.25,r:H*.115};
+    ground=portrait?(stage?H*.74:H*.37):H*.8;
+    moon=portrait?(stage?{x:W*.78,y:H*.2,r:Math.max(13,Math.min(W*.17,H*.2))}:{x:W*.78,y:H*.14,r:Math.max(13,W*.17)}):{x:W*.72,y:H*.25,r:H*.115};
     const mx=portrait?W*.87:W*.9;
     for(let i=0;i<80;i++)stars.push({x:R()*W,y:R()*H*.55,a:.2+R()*.5,p:R()*6.28});
     glowW=sprite(255,176,90,64);glowR=sprite(200,70,78,128);cloudTex=(function(){const c=document.createElement('canvas');c.width=128;c.height=32;const x=c.getContext('2d');x.save();x.scale(1,.25);const gr=x.createRadialGradient(64,64,0,64,64,64);gr.addColorStop(0,'rgba(9,11,13,.95)');gr.addColorStop(.6,'rgba(9,11,13,.55)');gr.addColorStop(1,'rgba(9,11,13,0)');x.fillStyle=gr;x.fillRect(0,0,128,128);x.restore();return c;})();

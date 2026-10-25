@@ -16,18 +16,13 @@
 /* ---------- Boards ---------- */
 .about-board-wrap { position: relative; margin: 0; width: 100%; }
 .about-board-primary { max-width: min(82%, 330px); justify-self: start; }
-.about-board-secondary { max-width: min(88%, 340px); justify-self: end; }
 .about-float { position: relative; }
 .about-tilt { position: relative; rotate: -4deg; }
-.about-board-secondary .about-tilt { rotate: 3.5deg; }
 
 .about-board { position: absolute; inset: -20px -14px -22px -22px; z-index: 0; border: 1px solid #a28f6840; border-radius: 3px; background: linear-gradient(135deg, #34352f, #202522 55%, #171c1b); box-shadow: 8px 20px 36px #00000050, inset 0 0 0 5px #10141355; transform: rotate(4deg); }
 .about-board::before { content: ""; position: absolute; top: -5px; left: 38%; width: 25%; height: 13px; border: 1px solid #b4a17a55; border-radius: 2px; background: linear-gradient(#777365, #363a34 60%, #595a4e); box-shadow: 0 3px 6px #00000045; }
-.about-board-secondary .about-board { inset: -16px -22px -24px -14px; transform: rotate(-6deg); background: linear-gradient(150deg, #2e322f, #191e1e); }
-.about-board-secondary .about-board::before { left: 62%; width: 18%; }
 
 .about-underlay { position: absolute; inset: 0; z-index: 1; background: #9d9786; border: 1px solid #d1c7ac33; transform: translate(-7px, 8px) rotate(-3deg); box-shadow: 0 4px 12px #00000035; }
-.about-board-secondary .about-underlay { transform: translate(8px, 7px) rotate(3deg); background: #aaa18c; }
 
 .about-sheet { position: relative; z-index: 2; padding: 22px 20px 20px; border: 1px solid #e5dbc137; background: linear-gradient(150deg, #d7ceba, #bdb199); color: #3a3731; box-shadow: 0 12px 28px #00000035; }
 .about-code { display: block; margin-bottom: 14px; font: 8px var(--font-mono), monospace; letter-spacing: .14em; color: #6a6557; }
@@ -52,15 +47,6 @@
 .about-pen-body::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 28%; border-bottom: 3px solid #b19d72; border-radius: 4px 4px 0 0; background: linear-gradient(90deg, transparent 45%, #c3b28b99 50%, #82775f 66%, transparent 72%); }
 .about-pen-body::after { content: ""; position: absolute; top: 100%; left: 0; right: 0; height: 15px; background: linear-gradient(90deg, #70674f, #c7b992 48%, #5c5849); clip-path: polygon(0 0, 100% 0, 50% 100%); }
 
-/* ---------- Notes board ---------- */
-.about-facts { margin: 0; }
-.about-facts > div { padding: 11px 0; border-bottom: 1px solid #4f4c4533; }
-.about-facts > div:last-child { border-bottom: 0; }
-.about-facts dt { font: 8px var(--font-mono), monospace; letter-spacing: .14em; text-transform: uppercase; color: #6a6557; }
-.about-facts dd { margin: 4px 0 0; font-size: 16px; font-weight: 500; letter-spacing: -.01em; color: #2b2924; }
-.about-ink-art { display: block; width: 100%; max-width: 220px; margin-top: 6px; color: #3a3731; overflow: visible; }
-.about-foot { display: block; margin-top: 10px; font: italic 13px Georgia, "Times New Roman", serif; color: #5d584c; }
-
 /* ---------- Introduction ---------- */
 .about-copy { max-width: 560px; }
 .about-copy p { margin: 0 0 20px; font-size: clamp(15px, 1.5vw, 17px); line-height: 1.9; color: #b8b4aa; }
@@ -70,25 +56,22 @@
 .about-work-link { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding-bottom: 2px; border-bottom: 1px solid #c4ac7860; font-size: 14px; color: #e1d7c5; transition: color .3s, border-color .3s; }
 .about-work-link:hover, .about-work-link:focus-visible { color: #dbc292; border-color: #dbc292; }
 
-/* ---------- Tablet: portrait + text side by side, notes board below ---------- */
+/* ---------- Tablet and desktop: portrait + text side by side ---------- */
 @media (min-width: 768px) {
-  .about-stage { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 56px 48px; padding-inline: 24px; }
+  .about-stage { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 56px 56px; padding-inline: 24px; }
   .about-board-primary { max-width: 330px; justify-self: center; }
-  .about-board-secondary { grid-column: 1 / -1; max-width: 360px; justify-self: center; }
 }
-
-/* ---------- Desktop: board — copy — board, like the Reading Journey ---------- */
 @media (min-width: 1025px) {
-  .about-stage { grid-template-columns: minmax(0, .95fr) minmax(0, 1.15fr) minmax(0, .95fr); gap: clamp(40px, 5vw, 84px); padding-inline: 28px; }
-  .about-board-primary { max-width: 340px; justify-self: start; }
-  .about-board-secondary { grid-column: auto; max-width: 320px; justify-self: end; }
+  .about-stage { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(48px, 6vw, 110px); padding-inline: 28px; }
+  .about-board-primary { max-width: 360px; justify-self: center; }
+  .about-copy { max-width: 620px; }
   .about-pen { left: -26px; }
   .about-pen-body { rotate: -20deg; }
 }
 
 /* ---------- Phones: same pieces, tighter ---------- */
 @media (max-width: 767px) {
-  .about-stage { gap: 52px; }
+  .about-stage { gap: 44px; }
   .about-section { padding-block: 65px; }
   .about-sheet { padding: 18px 16px 16px; }
   .about-pen { left: -14px; width: 7px; }

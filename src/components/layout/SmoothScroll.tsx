@@ -45,7 +45,7 @@ export default function SmoothScroll({ children, mobile = false }: { children: R
           target.focus({ preventScroll: true });
           if (!hadTabIndex) target.removeAttribute("tabindex");
           if (reduced) return;
-          landing = target.querySelector(".chapter-row, .hero-topline, .section-heading");
+          landing = target.matches(".chapter-card") ? target : target.querySelector(".chapter-row, .hero-topline, .section-heading");
           landing?.classList.add("section-landing");
           timer = setTimeout(clearLanding, 800);
         };

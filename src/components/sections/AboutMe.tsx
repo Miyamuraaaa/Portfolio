@@ -11,21 +11,14 @@ import "@/app/about.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const facts = [
-  { label: "Name", value: profile.name },
-  { label: "Program", value: profile.program },
-  { label: "Block", value: profile.block },
-  { label: "Course", value: profile.course },
-];
-
 /** Shows **double-asterisk** phrases from profile.bio as emphasised text. */
 function Rich({ text }: { text: string }) {
   return <>{text.split("**").map((part, index) => (index % 2 ? <strong key={index}>{part}</strong> : part))}</>;
 }
 
 /**
- * About section: a framed portrait on one board, the details on a second board,
- * and a pen that slides in beside the first — the same desk language as the Reading Journey.
+ * About section: a framed portrait on a board with a pen that slides in beside it,
+ * next to the introduction — the same desk language as the Reading Journey.
  * The layout and the scroll choreography are identical on phones, tablets and desktops;
  * only the travel distances and the column count change.
  */
@@ -57,15 +50,9 @@ export default function AboutMe() {
       gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: scrub(q(".about-copy")[0], "top 88%", "top 50%") })
         .fromTo(q("[data-about='line']"), { opacity: 0, y: 24 }, { opacity: 1, y: 0, stagger: 0.12, duration: 0.5 }, 0);
 
-      // Board two: arrives from the opposite side; the details and ink annotations follow.
-      gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: scrub(q(".about-board-secondary")[0]) })
-        .fromTo(q(".about-board-secondary"), { opacity: 0, x: mobile ? 36 : 110, y: 24, rotation: mobile ? 12 : 16 }, { opacity: 1, x: 0, y: 0, rotation: 0, duration: 0.6 }, 0)
-        .fromTo(q(".about-facts > div"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, stagger: 0.1, duration: 0.4 }, 0.3)
-        .fromTo(q(".about-ink"), { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.5 }, 0.55);
-
       // Quiet idle drift while the section is on screen.
       gsap.to(q(".about-float"), {
-        y: (index: number) => (index ? 4 : -4), duration: 3.8, stagger: 0.6,
+        y: -4, duration: 3.8,
         repeat: -1, yoyo: true, ease: "sine.inOut",
         scrollTrigger: { trigger: section.current, start: "top bottom", end: "bottom top", toggleActions: "play pause resume pause" },
       });
@@ -118,7 +105,7 @@ export default function AboutMe() {
             </div>
           </figure>
 
-          {/* Centre: the introduction */}
+          {/* The introduction */}
           <div className="about-copy">
             {profile.bio.map((paragraph, index) => (
               <p key={index} data-about="line" className={index === 0 ? "about-lead" : undefined}><Rich text={paragraph} /></p>
@@ -129,31 +116,6 @@ export default function AboutMe() {
                 {profile.independentWork.label} <ArrowUpRight size={16} aria-hidden="true" />
                 <span className="sr-only"> (opens in a new tab)</span>
               </a>
-            </div>
-          </div>
-
-          {/* Board two: the details */}
-          <div className="about-board-wrap about-board-secondary">
-            <div className="about-float">
-              <div className="about-tilt">
-                <span className="about-board" aria-hidden="true" />
-                <span className="about-underlay" aria-hidden="true" />
-                <div className="about-sheet about-notes">
-                  <span className="about-code" aria-hidden="true">NOTES / 02</span>
-                  <dl className="about-facts">
-                    {facts.map((fact) => (
-                      <div key={fact.label}>
-                        <dt>{fact.label}</dt>
-                        <dd>{fact.value}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                  <svg className="about-ink-art" viewBox="0 0 240 44" fill="none" aria-hidden="true">
-                    <path className="about-ink" pathLength="1" d="M8 30q58 -14 118 -2t60 -4M200 14l8 8 18-22" stroke="#88748f" strokeWidth="2" strokeLinecap="round" />
-                  </svg>
-                  <span className="about-foot" aria-hidden="true">Read. Respond. Reflect.</span>
-                </div>
-              </div>
             </div>
           </div>
         </div>

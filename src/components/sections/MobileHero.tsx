@@ -7,9 +7,10 @@ const TITLE = ["DIGITAL", "READING", "PORTFOLIO"];
 
 /**
  * Home page used when the visitor picks "Mobile".
- * One full-screen pixel-art temple at night (drawn on a tiny canvas, so it is
- * light on phones), the title stacked at the bottom-left where a thumb never
- * covers it, and a tap on the scene sends a burst of maple leaves.
+ * The pixel-art temple at night fills the top of the screen (drawn on a tiny
+ * canvas, so it is light on phones) and the title block sits below it on the
+ * dark ground, so they never overlap on any phone height. A tap on the scene
+ * sends a burst of maple leaves.
  * Same section id (#home) and same copy as the desktop hero.
  */
 export default function MobileHero({ ready = true }: { ready?: boolean }) {
@@ -22,7 +23,7 @@ export default function MobileHero({ ready = true }: { ready?: boolean }) {
     if (!element || !surface) return;
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let scene: ReturnType<typeof createPixelScene> | null = null;
-    try { scene = createPixelScene(surface, { reduced: motion.matches }); } catch { scene = null; }
+    try { scene = createPixelScene(surface, { reduced: motion.matches, stage: true }); } catch { scene = null; }
     if (!scene) { element.classList.add("m-hero-fallback"); return; }
     const active = scene;
     const onMotion = (event: MediaQueryListEvent) => active.setReduced(event.matches);
@@ -33,7 +34,10 @@ export default function MobileHero({ ready = true }: { ready?: boolean }) {
     const onTap = (event: PointerEvent) => {
       if ((event.target as HTMLElement).closest("a, button")) return;
       const box = surface.getBoundingClientRect();
-      active.burst(event.clientX - box.left, event.clientY - box.top);
+      const x = event.clientX - box.left;
+      const y = event.clientY - box.top;
+      if (x < 0 || y < 0 || x > box.width || y > box.height) return;
+      active.burst(x, y);
     };
     element.addEventListener("pointerdown", onTap);
     return () => {
@@ -46,10 +50,11 @@ export default function MobileHero({ ready = true }: { ready?: boolean }) {
 
   return (
     <section ref={host} id="home" className="m-hero" data-ready={ready ? "true" : "false"} aria-labelledby="m-hero-title">
-      <canvas ref={canvas} className="m-hero-scene" aria-hidden="true" />
-      <div className="m-hero-shade" aria-hidden="true" />
-      <div className="m-hero-inner">
+      <div className="m-hero-stage">
+        <canvas ref={canvas} className="m-hero-scene" aria-hidden="true" />
         <p className="m-hero-top eyebrow"><span><i className="m-sq" />GED0001</span><span>A Reading Collection / 2026</span></p>
+      </div>
+      <div className="m-hero-inner">
         <div className="m-hero-main">
           <h1 id="m-hero-title" className="m-mega" aria-label="Digital Reading Portfolio">
             {TITLE.map((line, row) => {
