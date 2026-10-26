@@ -49,7 +49,7 @@
 .m-hero-top { position: absolute; z-index: 2; top: calc(84px + env(safe-area-inset-top, 0px)); left: max(20px, env(safe-area-inset-left)); right: max(20px, env(safe-area-inset-right)); display: flex; justify-content: space-between; gap: 12px; color: #c4bfb3; font-size: 9px; pointer-events: none; }
 .m-hero-top span:first-child { display: inline-flex; align-items: center; gap: 10px; }
 .m-sq { display: inline-block; width: 6px; height: 6px; background: #b9a580; }
-.m-hero-inner { position: relative; z-index: 2; flex: none; display: flex; flex-direction: column; margin-top: auto; padding: max(46svh, 300px) max(20px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left)); }
+.m-hero-inner { position: relative; z-index: 2; flex: 1 1 auto; display: flex; flex-direction: column; padding: calc(116px + env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left)); }
 .m-mega, .m-by, .m-tagl, .m-desc { text-shadow: 0 1px 14px #0c0d0eb3, 0 0 3px #0c0d0e99; }
 .m-mega { margin: 0 0 8px; font-size: clamp(40px, 14.2vw, 80px); line-height: .88; font-weight: 500; letter-spacing: -.045em; text-transform: uppercase; color: #eee9df; }
 .m-ln { display: block; overflow: hidden; padding-bottom: .04em; white-space: nowrap; }
@@ -69,7 +69,7 @@
 .m-btn:active { transform: scale(.97); background: #b9a58026; }
 .m-btn.m-solid:active { background: #d3c09a; border-color: #d3c09a; }
 .m-btn:focus-visible, .m-scroll:focus-visible { outline: 2px solid #d3c09a; outline-offset: 3px; }
-.m-hero-bot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 20px; margin-top: 26px; padding-top: 12px; border-top: 1px solid #f0ece31f; color: #aaa79e; font-size: 9px; }
+.m-hero-bot { margin-top: auto !important; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 20px; margin-top: 26px; padding-top: 12px; border-top: 1px solid #f0ece31f; color: #aaa79e; font-size: 9px; }
 .m-scroll { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; color: inherit; text-decoration: none; }
 .m-scroll i { display: block; width: 1px; height: 34px; background: linear-gradient(#d3c09a, transparent); transform-origin: top; animation: m-drip 2.2s cubic-bezier(.2, .8, .2, 1) infinite; }
 @keyframes m-drip { 0% { transform: scaleY(0); } 50% { transform: scaleY(1); } 100% { transform: scaleY(1); opacity: 0; } }

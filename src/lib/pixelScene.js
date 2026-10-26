@@ -82,9 +82,9 @@ export function createPixelScene(canvas,opts){
     W=Math.ceil(vw/P);H=Math.ceil(vh/P);
     canvas.width=W;canvas.height=H;ctx.imageSmoothingEnabled=false;
     R=mulberry(2026);wins=[];lants=[];stars=[];leaves=[];bursts=[];rain=[];cloud=[];
-    s=portrait?(stage?Math.min(W*.86,H*.33):Math.min(W*.7,H*.25)):H*.62;
+    s=portrait?(stage?Math.min(W*.9,H*.36):Math.min(W*.7,H*.25)):H*.62;
     const cx=portrait?W*.5:W*.63;
-    ground=portrait?(stage?H*.72:H*.37):H*.8;
+    ground=portrait?(stage?H*.8:H*.37):H*.8;
     moon=portrait?(stage?{x:W*.77,y:H*.2,r:Math.max(13,Math.min(W*.18,H*.12))}:{x:W*.78,y:H*.14,r:Math.max(13,W*.17)}):{x:W*.72,y:H*.25,r:H*.115};
     const mx=portrait?W*.87:W*.9;
     for(let i=0;i<80;i++)stars.push({x:R()*W,y:R()*H*.55,a:.2+R()*.5,p:R()*6.28});
