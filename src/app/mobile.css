@@ -40,16 +40,17 @@
 
 /* ---------- Phone home page ---------- */
 .m-hero { position: relative; isolation: isolate; display: flex; flex-direction: column; min-height: 100svh; overflow: hidden; background: #0c0d0e; }
-.m-hero-stage { position: relative; flex: 1 1 auto; min-height: max(300px, 44svh); overflow: hidden; background: #0a0b0c; }
+.m-hero-stage { position: absolute; inset: 0; z-index: 0; overflow: hidden; background: #0a0b0c; }
 .m-hero-scene { position: absolute; inset: 0; z-index: 0; display: block; width: 100%; height: 100%; image-rendering: pixelated; pointer-events: none; }
 .m-hero.m-hero-fallback .m-hero-stage { background: radial-gradient(ellipse at 78% 30%, #a6814033, transparent 45%), linear-gradient(120deg, #0c0d0e 30%, #192020 70%, #101415); }
 /* Soft fade from the scene into the dark ground, and a light shade under the navbar. */
 .m-hero-stage::before { content: ""; position: absolute; inset: 0 0 auto 0; z-index: 1; height: 120px; pointer-events: none; background: linear-gradient(180deg, #0c0d0ecc, #0c0d0e00); }
-.m-hero-stage::after { content: ""; position: absolute; inset: auto 0 0 0; z-index: 1; height: 52%; pointer-events: none; background: linear-gradient(0deg, #0c0d0e 0%, #0c0d0ee6 26%, #0c0d0e66 62%, #0c0d0e00 100%); }
+.m-hero-stage::after { content: ""; position: absolute; inset: auto 0 0 0; z-index: 1; height: 34%; pointer-events: none; background: linear-gradient(0deg, #0c0d0ee6 0%, #0c0d0eb0 45%, #0c0d0e00 100%); }
 .m-hero-top { position: absolute; z-index: 2; top: calc(84px + env(safe-area-inset-top, 0px)); left: max(20px, env(safe-area-inset-left)); right: max(20px, env(safe-area-inset-right)); display: flex; justify-content: space-between; gap: 12px; color: #c4bfb3; font-size: 9px; pointer-events: none; }
 .m-hero-top span:first-child { display: inline-flex; align-items: center; gap: 10px; }
 .m-sq { display: inline-block; width: 6px; height: 6px; background: #b9a580; }
-.m-hero-inner { position: relative; z-index: 2; flex: none; display: flex; flex-direction: column; margin-top: -76px; padding: 0 max(20px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left)); }
+.m-hero-inner { position: relative; z-index: 2; flex: none; display: flex; flex-direction: column; margin-top: auto; padding: max(46svh, 300px) max(20px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left)); }
+.m-mega, .m-by, .m-tagl, .m-desc { text-shadow: 0 1px 14px #0c0d0eb3, 0 0 3px #0c0d0e99; }
 .m-mega { margin: 0 0 8px; font-size: clamp(40px, 14.2vw, 80px); line-height: .88; font-weight: 500; letter-spacing: -.045em; text-transform: uppercase; color: #eee9df; }
 .m-ln { display: block; overflow: hidden; padding-bottom: .04em; white-space: nowrap; }
 .m-ln.m-gold { color: #b9a580; }
@@ -83,11 +84,6 @@
 @media (max-width: 400px) {
   .m-cta { flex-wrap: nowrap; gap: 8px; }
   .m-btn { flex: 1 1 auto; min-width: 0; padding: 0 12px; gap: 8px; font-size: 12.5px; }
-}
-/* Short phones: a little less overlap so the title never covers the temple. */
-@media (max-height: 740px) {
-  .m-hero-stage { min-height: max(330px, 46svh); }
-  .m-hero-inner { margin-top: -34px; }
 }
 /* Very small or short phones: keep every line of the hero on screen. */
 @media (max-height: 640px) {
