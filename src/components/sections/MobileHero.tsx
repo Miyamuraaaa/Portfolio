@@ -67,13 +67,12 @@ export default function MobileHero({ ready = true }: { ready?: boolean }) {
             })}
           </h1>
           <p className="m-by m-fade" style={{ "--d": 0 } as React.CSSProperties}>By <b>Cliford V. Balce</b></p>
-          <p className="m-tagl m-fade" style={{ "--d": 120 } as React.CSSProperties}>Beyond the Pages</p>
-          <p className="m-desc m-fade" style={{ "--d": 240 } as React.CSSProperties}>A visual collection of my reading activities, responses, projects, iCARE activities, and reflections throughout GED0001.</p>
           <div className="m-cta m-fade" style={{ "--d": 360 } as React.CSSProperties}>
             <a className="m-btn m-solid" href="#projects">Explore Portfolio <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12L12 4M5 4h7v7" /></svg></a>
             <a className="m-btn" href="#journey">My Journey <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M4 9l4 4 4-4" /></svg></a>
           </div>
         </div>
+        <p className="m-tagl m-tagl-end m-fade" style={{ "--d": 240 } as React.CSSProperties}>Beyond the Pages</p>
         <div className="m-hero-bot eyebrow m-fade" style={{ "--d": 520 } as React.CSSProperties}>
           <a className="m-scroll" href="#journey" aria-label="Scroll to the Reading Journey"><span>Scroll</span><i /></a>
           <span>Read. Respond. Reflect.</span>
