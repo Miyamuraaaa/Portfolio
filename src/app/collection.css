@@ -1,5 +1,5 @@
-/* ---------- Homepage chapters: four squares, two columns ---------- */
-.chapter-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, auto); grid-auto-flow: column; gap: clamp(10px, 2vw, 20px); }
+/* ---------- Homepage chapters: four cards, two columns, read left to right then down (1 2 / 3 4) ---------- */
+.chapter-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, auto); grid-auto-flow: row; gap: clamp(10px, 2vw, 20px); }
 .chapter-card { position: relative; background-image: linear-gradient(#f0ece30a 1px, transparent 1px), linear-gradient(90deg, #f0ece30a 1px, transparent 1px); background-size: 32px 32px; background-color: #101114; isolation: isolate; display: flex; flex-direction: column; justify-content: flex-start; gap: 14px; min-height: 196px; padding: clamp(14px, 2.4vw, 28px); overflow: hidden; color: #eee9df; text-decoration: none; border: 1px solid #f0ece31f;; transition: border-color .35s, background .35s, transform .35s cubic-bezier(.2, .8, .2, 1); scroll-margin-top: 90px; }
 .chapter-card::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: 0; background: radial-gradient(circle at 85% 0%, #b9a58029, transparent 60%); transition: opacity .4s; }
 .chapter-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: #b9a580; }
