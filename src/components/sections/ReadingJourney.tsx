@@ -99,7 +99,7 @@ export default function ReadingJourney() {
           <a href={milestone.href} data-cursor="link"><span className="eyebrow">0{index + 1}</span><strong>{milestone.title}</strong><span>{milestone.detail}</span></a>
         </li>)}</ol>
       </div>
-      <p className="journey-settle eyebrow">READ. CONNECT. REFLECT. / GED0001</p>
+      <p className="journey-settle eyebrow">READ. RESPOND. REFLECT. / GED0001</p>
     </div>
   </section>;
 }

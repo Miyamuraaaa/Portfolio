@@ -27,8 +27,8 @@ export const profile = {
   bio: [
     "Hello! I'm Cliford V. Balce, a Bachelor of Science in Civil Engineering (BSCE) student.",
     "If I had to describe myself in three words, I'd say **persistent, curious, and always willing to learn.** I enjoy exploring new ideas, figuring out how things work, and finding solutions when challenges come my way. I might learn something quickly but forget it just as fast sometimes (my memory has its own plans, TT ). Still, I believe that there's always something new to learn, and I try my best to keep improving.",
-    "This portfolio is one example of that mindset. I designed and coded this website myself, and honestly, it was quite a challenge! It took a lot of time, patience, and trial and error to bring my ideas to life. But through the process, I learned more than just how to build a website\u2014I also learned the value of persistence and figuring things out along the way.",
-    "For me, this portfolio is more than a collection of academic work. It's a reflection of my learning journey, the effort I've put into my work, and the person I'm continuing to become.",
-    "Thank you for visiting my portfolio! I hope you enjoy exploring my work and following my journey **beyond the pages.**",
+    "I designed and coded this portfolio myself, and it definitely tested my patience! After plenty of trial and error, I learned that creating something meaningful takes time, effort, and a little stubbornness.",
+    "More than just a collection of academic work, this portfolio reflects my growth, experiences, and the person I'm becoming.",
+    "Thanks for stopping by! I hope you enjoy exploring my journey **beyond the pages.**",
   ],
 } as const;

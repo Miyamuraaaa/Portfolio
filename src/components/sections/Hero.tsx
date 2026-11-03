@@ -63,7 +63,7 @@ export default function Hero({ ready = true }: { ready?: boolean }) {
       <div className="hero-foot editorial-shell">
         <a href="#journey" data-cursor="link" className="eyebrow scroll-cue">SCROLL <ArrowDown size={15} /></a>
         <p className="eyebrow">READ. RESPOND. REFLECT.</p>
-        <span className="eyebrow hidden sm:block">01 — 05</span>
+        <span className="eyebrow hidden sm:block">01 — 04</span>
       </div>
     </section>
   );

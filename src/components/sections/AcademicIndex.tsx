@@ -23,7 +23,7 @@ export default function AcademicIndex() {
   return (
     <section className="academic-index editorial-shell" aria-labelledby="collection-title">
       <div className="section-heading" data-reveal-group>
-        <div><p className="eyebrow" data-reveal="label">THE GED0001 COLLECTION</p><h2 id="collection-title" data-reveal="title">A journey in <em>five chapters.</em></h2></div>
+        <div><p className="eyebrow" data-reveal="label">THE GED0001 COLLECTION</p><h2 id="collection-title" data-reveal="title">A journey in <em>four chapters.</em></h2></div>
         <p data-reveal="description">The collection will grow<br />as coursework is added.</p>
       </div>
       <div className="chapter-grid" data-reveal-group>{sections.map((section, index) => {

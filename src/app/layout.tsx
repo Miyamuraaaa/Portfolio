@@ -8,7 +8,7 @@ import "./mobile.css";
 export const metadata: Metadata = {
   title: "GED0001 | DIGITAL READING PORTFOLIO | By Cliford V. Balce",
   description:
-    "A visual collection of my reading activities, responses, projects, iCARE activities, and reflections throughout GED0001. By Cliford V. Balce.",
+    "A visual GED0001 collection of my reading activities, responses, projects, iCARE work, and reflections.",
 };
 
 export default function RootLayout({

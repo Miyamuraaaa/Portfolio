@@ -45,7 +45,7 @@ export default function DeviceGate({ suggested, onChoose }: { suggested: DeviceC
       <div className="device-gate-inner">
         <p className="eyebrow device-eyebrow"><span className="label-dot" /> GED0001 / DIGITAL READING PORTFOLIO</p>
         <h2 id="device-title" className="device-title">Welcome to<br /><em>Beyond the Pages.</em></h2>
-        <p id="device-copy" className="device-copy">This is a collection of my reading activities, responses, iCARE activities and reflections for GED0001. To show it the way it was made to be seen, tell me what you are using.</p>
+        <p id="device-copy" className="device-copy">This GED0001 collection holds my reading activities, responses, iCARE work, and reflections. Choose your device view.</p>
         <div className="device-options">
           <button ref={first} type="button" className="device-card" data-suggested={suggested === "desktop"} onClick={() => choose("desktop")}>
             <svg viewBox="0 0 64 48" aria-hidden="true"><rect x="6" y="5" width="52" height="30" rx="2" /><path d="M24 43h16M32 35v8" /></svg>
